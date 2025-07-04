@@ -3,10 +3,10 @@ title: 'Markdown Style Guide'
 seoTitle: 'A Definitive Guide to Markdown Style'
 slug: 'markdown-style-guide'
 description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
-pubDate: '2024-08-18'
-updatedDate: '2024-08-19'
+pubDate: '2025-07-05'
+updatedDate: '2025-07-05'
 tags: ["Markdown", "Guide"]
-coverImage: './blog-placeholder-4.jpg'
+coverImage: 'blog-placeholder-4.jpg'
 ---
 
 Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.
@@ -43,7 +43,7 @@ Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sap
 
 ### Output
 
-![blog placeholder](/blog-placeholder-about.jpg)
+![blog placeholder](./blog-placeholder-4.jpg)
 
 ## Blockquotes
 
