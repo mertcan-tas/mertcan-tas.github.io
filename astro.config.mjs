@@ -7,7 +7,7 @@ import { autoNewTabExternalLinks } from './src/autoNewTabExternalLinks';
 import partytown from "@astrojs/partytown";
 
 export default defineConfig({
-  site: 'https://mertcan-tas.pages.dev',
+  site: 'https://mertcan-tas.github.io',
   integrations: [mdx(), sitemap(), tailwind(), partytown()],
   markdown: {
     extendDefaultPlugins: true,
