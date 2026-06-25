@@ -7,6 +7,7 @@ pubDate: '2025-07-11'
 updatedDate: '2025-07-11'
 tags: ['Django', 'Environment Variables']
 coverImage: '2.jpg'
+translationKey: 'env-decouple'
 ---
 
 ## Why Use Environment Variables?

@@ -7,6 +7,7 @@ pubDate: '2025-07-12'
 updatedDate: '2025-07-12'
 tags: ['Django', 'Redis RQ', 'Redis']
 coverImage: '3.jpg'
+translationKey: 'redis-rq'
 ---
 
 In modern web applications, certain operations can be time-consuming, such as processing large files, sending emails to a long list of recipients, or performing complex data analysis. Executing these tasks synchronously within the traditional HTTP request-response cycle can lead to a poor user experience, as it blocks the user interface and may even cause timeouts. This is where background job processing comes in handy.

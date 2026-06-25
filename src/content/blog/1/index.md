@@ -7,6 +7,7 @@ pubDate: '2025-07-07'
 updatedDate: '2025-07-07'
 tags: ['Django', 'DRF', 'Swagger']
 coverImage: '1.jpg'
+translationKey: 'swagger-drf'
 ---
 
 Automated API documentation is a crucial part of developing and maintaining a robust backend service. It saves time, reduces errors, and makes your API much easier for frontend developers, mobile developers, and other consumers to work with. Swagger (now known as the OpenAPI Specification) is the industry standard for this.
