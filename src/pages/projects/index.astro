@@ -11,6 +11,7 @@ const projects = (await getProjectsByLang('en')).map((p) => ({
 	tags: p.data.tags,
 	demoLink: p.data.demoLink,
 	demoLinkRel: p.data.demoLinkRel,
+	repoLink: p.data.repoLink,
 	detailLink: p.data.hasDetail === false ? undefined : `/projects/${p.data.translationKey}/`
 }));
 ---

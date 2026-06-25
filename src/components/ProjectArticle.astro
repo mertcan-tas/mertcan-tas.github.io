@@ -5,7 +5,7 @@ import { render, type CollectionEntry } from 'astro:content';
 import { useTranslations, type Lang } from '@src/i18n/ui';
 
 const { project } = Astro.props as { project: CollectionEntry<'projects'> };
-const { name, description, tags, demoLink, demoLinkRel, coverImage } = project.data;
+const { name, description, tags, demoLink, demoLinkRel, repoLink, coverImage } = project.data;
 const { Content } = await render(project);
 const lang = (Astro.currentLocale ?? 'en') as Lang;
 const t = useTranslations(lang);
@@ -32,19 +32,34 @@ const base = lang === 'tr' ? '/tr' : '';
 
 		{coverImage && <Image class='rounded-2xl w-full mb-8' src={coverImage} alt={name} loading='eager' />}
 
-		{
-			demoLink && (
-				<a
-					href={demoLink}
-					target='_blank'
-					rel={demoLinkRel}
-					class='inline-flex items-center gap-2 rounded-full bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 px-4 py-2 text-sm font-semibold no-underline mb-8 hover:opacity-90 transition-opacity'
-				>
-					{t('card.demo')}
-					<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M15 3h6v6'/><path d='M10 14 21 3'/><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/></svg>
-				</a>
-			)
-		}
+		<div class='flex flex-wrap gap-3 mb-8'>
+			{
+				demoLink && (
+					<a
+						href={demoLink}
+						target='_blank'
+						rel={demoLinkRel}
+						class='inline-flex items-center gap-2 rounded-full bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 px-4 py-2 text-sm font-semibold no-underline hover:opacity-90 transition-opacity'
+					>
+						{t('card.demo')}
+						<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M15 3h6v6'/><path d='M10 14 21 3'/><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/></svg>
+					</a>
+				)
+			}
+			{
+				repoLink && (
+					<a
+						href={repoLink}
+						target='_blank'
+						rel='noopener noreferrer'
+						class='inline-flex items-center gap-2 rounded-full border border-zinc-300 dark:border-zinc-700 px-4 py-2 text-sm font-semibold no-underline hover:border-zinc-700 dark:hover:border-zinc-300 transition-colors'
+					>
+						{t('card.github')}
+						<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M15 3h6v6'/><path d='M10 14 21 3'/><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/></svg>
+					</a>
+				)
+			}
+		</div>
 
 		<Prose>
 			<Content />

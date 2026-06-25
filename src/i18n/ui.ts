@@ -44,6 +44,7 @@ export const ui = {
     'card.article': 'Article',
     'card.details': 'Details',
     'card.demo': 'Demo',
+    'card.github': 'GitHub',
     'project.fernetrix.description':
       'A developer tool for generating secure Django secret keys',
   },
@@ -88,6 +89,7 @@ export const ui = {
     'card.article': 'Makale',
     'card.details': 'Detay',
     'card.demo': 'Demo',
+    'card.github': 'GitHub',
     'project.fernetrix.description':
       'Güvenli Django secret key’leri üreten bir geliştirici aracı',
   },

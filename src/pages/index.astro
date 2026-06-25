@@ -19,6 +19,7 @@ const top6Projects = (await getProjectsByLang('en')).slice(0, 6).map((p) => ({
 	tags: p.data.tags,
 	demoLink: p.data.demoLink,
 	demoLinkRel: p.data.demoLinkRel,
+	repoLink: p.data.repoLink,
 	detailLink: p.data.hasDetail === false ? undefined : `/projects/${p.data.translationKey}/`
 }));
 const posts = (await getPostsByLang('en'))
