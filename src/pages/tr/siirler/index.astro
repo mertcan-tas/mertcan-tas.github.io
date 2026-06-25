@@ -1,0 +1,33 @@
+---
+import BaseLayout from '@src/layouts/BaseLayout.astro';
+import { getPoems } from '@src/i18n/content';
+import { useTranslations } from '@src/i18n/ui';
+
+const t = useTranslations('tr');
+const poems = await getPoems();
+const altLocaleUrl = { en: '/', tr: '/tr/siirler/' };
+const fmtDate = (d: Date) =>
+	d.toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+
+<BaseLayout title={t('poems.title')} description={t('poems.description')} altLocaleUrl={altLocaleUrl}>
+	<div class='container'>
+		<div class='mb-12'>
+			<h1 class='text-3xl font-bold mb-2'>{t('poems.title')}</h1>
+			<p class='text-zinc-700 dark:text-zinc-300 text-lg'>{t('poems.description')}</p>
+		</div>
+		<div class='max-w-2xl mx-auto flex flex-col gap-16'>
+			{
+				poems.map((poem) => (
+					<article>
+						<h2 class='text-2xl font-bold mb-1'>{poem.data.title}</h2>
+						<p class='text-sm text-zinc-500 dark:text-zinc-400 mb-6'>{fmtDate(poem.data.date)}</p>
+						<p class='whitespace-pre-line font-serif text-lg leading-loose text-zinc-800 dark:text-zinc-200'>
+							{poem.data.text.trim()}
+						</p>
+					</article>
+				))
+			}
+		</div>
+	</div>
+</BaseLayout>

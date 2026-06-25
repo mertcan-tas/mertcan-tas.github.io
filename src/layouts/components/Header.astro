@@ -16,6 +16,10 @@ const menu = [
 		link: `${base}/posts/`,
 		label: t('nav.posts')
 	},
+	...(lang === 'tr' ? [{
+		link: '/tr/siirler/',
+		label: t('nav.poems')
+	}] : []),
 	{
 		link: `${base}/projects/`,
 		label: t('nav.projects')

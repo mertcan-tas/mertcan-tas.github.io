@@ -24,3 +24,8 @@ export async function getProjectByTranslationKey(key: string | undefined, lang: 
   const all = await getCollection('projects');
   return all.find((p) => p.data.translationKey === key && (p.data.lang ?? 'en') === lang);
 }
+
+export async function getPoems() {
+  const all = await getCollection('poems');
+  return all.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+}

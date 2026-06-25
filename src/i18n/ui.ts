@@ -6,6 +6,9 @@ export const ui = {
     'nav.posts': 'Posts',
     'nav.projects': 'Projects',
     'nav.tags': 'Tags',
+    'nav.poems': 'Poems',
+    'poems.title': 'Poems',
+    'poems.description': 'A few poems I write every now and then.',
     'home.greeting': "👋 Hey, I’m Mertcan Taş!",
     'home.intro1':
       "I’m a software developer from Turkey, mostly working with Vue, Django, and REST APIs. This is just my own little corner of the web — a place to jot down what I learn and tinker with the occasional side project.",
@@ -52,6 +55,9 @@ export const ui = {
     'nav.posts': 'Yazılar',
     'nav.projects': 'Projeler',
     'nav.tags': 'Etiketler',
+    'nav.poems': 'Şiirler',
+    'poems.title': 'Şiirler',
+    'poems.description': 'Ara sıra yazdığım birkaç şiir.',
     'home.greeting': "👋 Merhaba, ben Mertcan Taş!",
     'home.intro1':
       "Türkiye'den bir yazılım geliştiricisiyim; çoğunlukla Vue, Django ve REST API'lerle uğraşıyorum. Burası benim küçük köşem — öğrendiklerimi not aldığım ve ara sıra yan projeler kurcaladığım bir yer.",
