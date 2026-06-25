@@ -1,8 +1,9 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { getCollection } from 'astro:content';
 import BaseLayout from '@src/layouts/BaseLayout.astro';
 import { slugify } from '@src/utils';
+import { getPostsByLang } from '@src/i18n/content';
+import { useTranslations } from '@src/i18n/ui';
 
 type BlogPost = CollectionEntry<'blog'>;
 interface Tag {
@@ -29,7 +30,8 @@ function groupTagsByFirstLetter(tags: Tag[]) {
     }));
 }
 
-const allPosts: BlogPost[] = await getCollection('blog');
+const t = useTranslations('en');
+const allPosts: BlogPost[] = await getPostsByLang('en');
 const mappedTags: { [key: string]: Tag } = {};
 for (const post of allPosts) {
 	for (const tag of post.data?.tags || []) {
@@ -47,8 +49,8 @@ for (const post of allPosts) {
 	}
 }
 const groupedTags  = groupTagsByFirstLetter(Object.values(mappedTags))
-const title = `All Tags`;
-const description = 'Post tags: concise keywords categorizing content for easy navigation and improved searchability'
+const title = t('tags.title');
+const description = t('tags.description');
 ---
 
 <BaseLayout title={title} description={description}>

@@ -1,14 +1,16 @@
 ---
 import Author from '../Author.astro';
+import { useTranslations, type Lang } from '@src/i18n/ui';
+const lang = (Astro.currentLocale ?? 'en') as Lang;
+const t = useTranslations(lang);
 ---
 
 <div class='about-the-author py-4 border-b'>
-	<h3 class='font-extrabold uppercase mb-4 text-sm'>About the Author</h3>
+	<h3 class='font-extrabold uppercase mb-4 text-sm'>{t('author.heading')}</h3>
 	<Author picSize='md' />
 	<div class='author-desc text-[.825rem] my-4'>
 		<p class='mb-3'>
-			Mertcan Taş is a software developer from Turkey focused on Vue, Django, and REST APIs. He enjoys building developer tools and
-			collaborating on projects.
+			{t('author.bio')}
 		</p>
 	</div>
 </div>

@@ -3,37 +3,29 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Ava from '@src/assets/img/ava.jpg';
 import Prose from '../components/Prose.astro';
+import { useTranslations } from '@src/i18n/ui';
+
+const t = useTranslations('en');
 ---
 
-<BaseLayout title='About Me' description='Lorem ipsum dolor sit amet'>
+<BaseLayout title={t('about.title')} description={t('about.p1')}>
 	<div class='container'>
 		<main class='prose text-lg dark:prose-invert'>
 			<article>
 				<div class='w-full md:flex md:items-center gap-16 mb-10'>
 					<div class='text-pretty leading-9'>
-						<h1 class='text-4xl font-bold mb-4'>About Me</h1>
+						<h1 class='text-4xl font-bold mb-4'>{t('about.title')}</h1>
 						<Prose>
 							<div class='text-lg'>
-								<p>
-									I’m a software developer from Turkey, mainly focused on Vue, Django, and REST APIs. I enjoy sharing what I learn whether
-									it’s through blog posts, open-source tools, or side projects.
-								</p>
-								<p>
-									I enjoy crafting clean, maintainable code and building practical solutions with Vue and Django. I'm passionate about
-									developer experience, performance, and elegant UI. Whether it's backend logic or frontend interactivity, I like bridging
-									both sides to deliver complete, thoughtful software.
-								</p>
+								<p>{t('about.p1')}</p>
+								<p>{t('about.p2')}</p>
 							</div>
 						</Prose>
 					</div>
 					<Image src={Ava} alt='Mertcan Taş' width={300} class='rounded-3xl rotate-0 mx-4 md:mx-0' />
 				</div>
 				<div>
-					<p>
-						Coding is not just my profession, but also something I truly enjoy. I like approaching problems with a clean, minimalistic
-						mindset and building tools that not only work, but feel good to use. I’m always exploring ways to improve both the developer
-						experience and the end-user experience. Writing helps me reflect on what I learn and grow as a developer.
-					</p>
+					<p>{t('about.p3')}</p>
 				</div>
 			</article>
 		</main>

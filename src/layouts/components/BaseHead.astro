@@ -8,11 +8,12 @@ interface Props {
 	title: string;
 	description: string;
 	image?: string;
+	localeUrls?: { en: string; tr: string };
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = '/syakir.webp' } = Astro.props;
+const { title, description, image = '/syakir.webp', localeUrls } = Astro.props;
 ---
 
 <!-- Global Metadata -->
@@ -23,6 +24,17 @@ const { title, description, image = '/syakir.webp' } = Astro.props;
 
 <!-- Canonical URL -->
 <link rel='canonical' href={canonicalURL} />
+
+<!-- Locale alternates -->
+{
+	localeUrls && (
+		<>
+			<link rel='alternate' hreflang='en' href={new URL(localeUrls.en, Astro.site)} />
+			<link rel='alternate' hreflang='tr' href={new URL(localeUrls.tr, Astro.site)} />
+			<link rel='alternate' hreflang='x-default' href={new URL(localeUrls.en, Astro.site)} />
+		</>
+	)
+}
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>

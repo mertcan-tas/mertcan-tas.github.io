@@ -4,23 +4,25 @@ import { Image } from 'astro:assets';
 import AvaLogo from '@src/assets/img/small-ava.jpg';
 import GithubWhite from '@src/assets/img/github-mark-white.svg';
 import GithubBlack from '@src/assets/img/github-mark.svg';
+import { useTranslations, type Lang } from '@src/i18n/ui';
+
+const { localeUrls } = Astro.props;
+const lang = (Astro.currentLocale ?? 'en') as Lang;
+const t = useTranslations(lang);
+const base = lang === 'tr' ? '/tr' : '';
 
 const menu = [
-	//   {
-	// 		link: '/about/',
-	// 		label: 'About'
-	// 	},
 	{
-		link: '/posts/',
-		label: 'Posts'
+		link: `${base}/posts/`,
+		label: t('nav.posts')
 	},
 	{
-		link: '/projects/',
-		label: 'Projects'
+		link: `${base}/projects/`,
+		label: t('nav.projects')
 	},
 	{
-		link: '/tags/',
-		label: 'Tags'
+		link: `${base}/tags/`,
+		label: t('nav.tags')
 	}
 ];
 ---
@@ -29,13 +31,22 @@ const menu = [
 	<div class='container'>
 		<nav class='flex gap-4 items-center justify-between py-3'>
 			<h2 class='m-0'>
-				<a href='/' class='flex gap-4 items-center text-xl font-black uppercase'>
+				<a href={base + '/'} class='flex gap-4 items-center text-xl font-black uppercase'>
 					<!-- You can use your site logo, rounded ava or simply your site name here-->
 					<Image src={AvaLogo} alt='Your site name' class='rounded-full w-11 border-white border-2 shadow-lg' />
 					<!-- {SITE_TITLE} -->
 				</a>
 			</h2>
-			<div class='flex'>
+			<div class='flex items-center'>
+				<div class='flex items-center text-sm font-semibold'>
+					<a href={localeUrls.en}
+						class:list={['px-1.5 py-1', { 'underline': lang === 'en', 'opacity-60 hover:opacity-100': lang !== 'en' }]}
+						aria-label='English'>EN</a>
+					<span class='opacity-40'>/</span>
+					<a href={localeUrls.tr}
+						class:list={['px-1.5 py-1', { 'underline': lang === 'tr', 'opacity-60 hover:opacity-100': lang !== 'tr' }]}
+						aria-label='Türkçe'>TR</a>
+				</div>
 				<a class='p-3 dark:hidden' href='https://github.com/mertcan-tas' target='_blank'
 					><Image src={GithubBlack} width={24} height={24} alt='Github logo' /></a
 				>
@@ -80,7 +91,7 @@ const menu = [
 		<div class='fixed top-3 w-auto max-w-full px-3 left-1/2 -translate-x-1/2 z-[999]'>
 			<div class='flex px-2.5 bg-white/90 dark:bg-zinc-900/75 backdrop-blur-md leading-tight rounded-full border dark:border-zinc-700'>
 				<div class='px-2.5 text-sm'>
-					<HeaderLink class='py-3 flex items-center' href='/' aria-label='Home'>
+					<HeaderLink class='py-3 flex items-center' href={base + '/'} aria-label='Home'>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
 							width='20'

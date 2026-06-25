@@ -4,9 +4,13 @@ import type { Project } from '../pages/projects/projects'
 import { kFormatter } from '../utils'
 import GithubWhite from '@src/assets/img/github-mark-white.svg';
 import GithubBlack from '@src/assets/img/github-mark.svg';
+import { useTranslations, type Lang } from '@src/i18n/ui';
 
 const { projects } = Astro.props
-
+const lang = (Astro.currentLocale ?? 'en') as Lang;
+const t = useTranslations(lang);
+const desc = (p: Project) =>
+  typeof p.description === 'string' ? p.description : (p.description?.[lang] ?? p.description?.en ?? '');
 ---
 <div class="grid grid-cols-12 gap-5">
   {
@@ -50,19 +54,19 @@ const { projects } = Astro.props
           <a class="underline" href={project.demoLink} target="_blank" rel={project.demoLinkRel}>{project.name}</a>
         </h3>
         <div class="line-clamp-2 text-zinc-600 dark:text-zinc-300 mb-4 min-h-[50px]">
-          <p>{project.description}</p>
+          <p>{desc(project)}</p>
         </div>
         <div class="flex justify-end gap-3">
           {
             project.postLink &&
             <a class="underline flex items-center gap-2" href={project.postLink}>
-              Article
+              {t('card.article')}
             </a>
           }
           {
             project.demoLink &&  // This line adds the conditional check for the Demo link
             <a class="underline flex items-center gap-2" href={project.demoLink} target="_blank" rel={project.demoLinkRel}>
-              Demo 
+              {t('card.demo')}
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
             </a>
           }

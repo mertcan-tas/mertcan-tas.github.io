@@ -3,20 +3,24 @@ import BaseHead from './components/BaseHead.astro';
 import Header from './components/Header.astro';
 import Footer from './components/Footer.astro';
 import { loadEnv } from 'vite';
+import { withLocale, type Lang } from '@src/i18n/utils';
 
 const { GTAG_MEASUREMENT_ID } = loadEnv(process.env.NODE_ENV || 'production', process.cwd(), '');
-const { title, description, image } = Astro.props;
+const { title, description, image, altLocaleUrl } = Astro.props;
+const lang = (Astro.currentLocale ?? 'en') as Lang;
+const path = Astro.url.pathname;
+const localeUrls = altLocaleUrl ?? { en: withLocale(path, 'en'), tr: withLocale(path, 'tr') };
 ---
 
 <!doctype html>
-<html lang='en'>
+<html lang={lang}>
 	<head>
-		<BaseHead title={title} description={description} image={image} />
+		<BaseHead title={title} description={description} image={image} localeUrls={localeUrls} />
 	</head>
 	<body
 		class="bg-white dark:bg-zinc-900 dark:text-zinc-100 pt-16 sm:pt-0"
 	>
-		<Header/>
+		<Header localeUrls={localeUrls} />
 		<div class='py-8 min-h-[calc(100vh-160px)]'>
 			<slot />
 		</div>
