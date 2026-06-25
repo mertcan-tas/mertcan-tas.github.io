@@ -11,17 +11,17 @@ lang: 'tr'
 translationKey: 'swagger-drf'
 ---
 
-Otomatik API dokümantasyonu, sağlam bir arka uç servisi geliştirmenin ve sürdürmenin kritik bir parçasıdır. Zaman kazandırır, hataları azaltır ve API’nizi ön uç geliştiriciler, mobil geliştiriciler ve diğer kullanıcılar için çok daha kolay kullanılır hale getirir. Swagger (artık OpenAPI Specification olarak biliniyor) bu konuda sektör standardıdır.
+Otomatik API dokümantasyonu, sağlam bir backend servisi geliştirmenin ve sürdürmenin en önemli parçalarından biridir. Hem zaman kazandırır, hem hata payını düşürür, hem de API’nizi frontend geliştiriciler, mobil geliştiriciler ve API’nizle çalışan herkes için çok daha anlaşılır kılar. Bu işin standardı ise Swagger; yani bugünkü adıyla OpenAPI Specification.
 
-Bu rehber, OpenAPI 3 şemaları üreten modern bir kütüphane olan `drf-spectacular` kullanarak Django REST Framework (DRF) projeniz için şık ve etkileşimli Swagger UI dokümantasyonu kurmanın adımlarını anlatır.
+Bu rehberde, OpenAPI 3 şemaları üreten modern bir kütüphane olan `drf-spectacular` ile Django REST Framework (DRF) projeniz için şık ve etkileşimli bir Swagger UI dokümantasyonunu adım adım kuracağız.
 
 ## Neden `drf-spectacular`?
 
-`drf-yasg` gibi başka kütüphaneler de bulunsa da, modern OpenAPI 3 özelliklerini daha iyi desteklemesi, geniş özelleştirme seçenekleri ve aktif olarak bakımının yapılması nedeniyle şu anda `drf-spectacular` önerilmektedir.
+`drf-yasg` gibi başka kütüphaneler de var; ama modern OpenAPI 3 özelliklerini daha iyi desteklediği, geniş özelleştirme imkânı sunduğu ve aktif olarak geliştirildiği için bugün önerilen kütüphane `drf-spectacular`.
 
 ## Adım 1: Kurulum
 
-Öncelikle paketi projenize eklemeniz gerekiyor. Terminalinizi açın ve pip ile kurun:
+Önce paketi projenize eklemeniz gerekiyor. Terminali açıp pip ile kurun:
 
 ```bash
 pip install drf-spectacular
@@ -31,9 +31,9 @@ pip install drf-spectacular
 
 ## Adım 2: `settings.py` Yapılandırması
 
-Ardından `drf-spectacular`'ı Django projenizin ayarlarına kaydetmeniz gerekiyor.
+Sırada `drf-spectacular`’ı Django projenizin ayarlarına tanıtmak var.
 
-`'drf_spectacular'`'ı `INSTALLED_APPS` listenize ekleyin:
+`'drf_spectacular'`’ı `INSTALLED_APPS` listesine ekleyin:
 
 ```python
 INSTALLED_APPS = [
@@ -56,7 +56,7 @@ PROJECT_APPS = [
 INSTALLED_APPS += PROJECT_APPS + THIRD_PARTY_APPS
 ```
 
-Sonra, `REST_FRAMEWORK` ayarlarınıza `DEFAULT_SCHEMA_CLASS` ekleyerek Django REST Framework'e varsayılan şema oluşturucu olarak `drf-spectacular`'ı kullanmasını söyleyin:
+Ardından `REST_FRAMEWORK` ayarlarına `DEFAULT_SCHEMA_CLASS` ekleyerek DRF’e varsayılan şema oluşturucu olarak `drf-spectacular`’ı kullanmasını söyleyin:
 
 ```python
 REST_FRAMEWORK = {
@@ -64,7 +64,7 @@ REST_FRAMEWORK = {
 }
 ```
 
-API'nizin başlığı, açıklaması ve sürümü gibi proje genelinde geçerli dokümantasyon ayarlarını da ekleyebilirsiniz.
+API’nizin başlığı, açıklaması, sürümü gibi proje geneli dokümantasyon ayarlarını da buradan tanımlayabilirsiniz.
 
 ```python
 SPECTACULAR_SETTINGS = {
@@ -79,7 +79,7 @@ SPECTACULAR_SETTINGS = {
 
 ## Adım 3: `urls.py` Yapılandırması
 
-Dokümantasyona bir web tarayıcısı üzerinden erişilebilmesi için, UI uç noktalarını projenizin kök `urls.py` dosyasına eklemeniz gerekir. `drf-spectacular` kutudan çıkar çıkmaz iki güzel UI seçeneği sunar: Swagger UI ve ReDoc.
+Dokümantasyona tarayıcıdan erişebilmek için arayüz (UI) adreslerini projenizin kök `urls.py` dosyasına eklemeniz gerekiyor. `drf-spectacular`, hazır olarak iki güzel arayüz seçeneğiyle geliyor: Swagger UI ve ReDoc.
 
 ```python
 from django.contrib import admin
@@ -95,24 +95,24 @@ urlpatterns = [
 ]
 ```
 
-Şimdi geliştirme sunucunuzu çalıştırın:
+Şimdi geliştirme sunucusunu çalıştırın:
 
 ```bash
 python manage.py runserver
 ```
 
-Artık dokümantasyonunuza şu adreslerden erişebilirsiniz:
+Artık dokümantasyonunuza şu adreslerden ulaşabilirsiniz:
 
 - **Swagger UI:** `http://127.0.0.1:8000/api/schema/swagger-ui/`
 - **ReDoc:** `http://127.0.0.1:8000/api/schema/redoc/`
 
 ---
 
-## Adım 4: Dokümantasyonunuzu Özelleştirme
+## Adım 4: Dokümantasyonu Özelleştirme
 
-`drf-spectacular`, view'larınızdan, serializer'larınızdan ve modellerinizden bilgi çıkarmada oldukça başarılıdır. Ancak daha özel bir dokümantasyon için `@extend_schema` dekoratörünü kullanabilirsiniz.
+`drf-spectacular`, view’larınızdan, serializer’larınızdan ve modellerinizden bilgi çıkarmakta gerçekten başarılı. Yine de daha ayrıntılı bir dokümantasyon istiyorsanız `@extend_schema` dekoratörünü kullanabilirsiniz.
 
-Aşağıda, bir viewset'in `list` metoduna özet, açıklama ve özel yanıt örnekleri eklemenin bir örneği yer alıyor.
+Aşağıda, bir viewset’in `list` metoduna nasıl özet, açıklama ve özel yanıt örnekleri ekleyebileceğinizi gösteren bir örnek var.
 
 ```python
 from rest_framework import viewsets
@@ -136,10 +136,10 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
         return super().list(request, *args, **kwargs)
 ```
 
-Bu dekoratör, `GET /products/` uç noktası için üretilen dokümantasyonu zenginleştirir ve API'nizi kullanan herkes için çok daha anlaşılır hale getirir.
+Bu dekoratör, `GET /products/` endpoint’i için üretilen dokümantasyonu zenginleştirir ve API’nizi kullanan herkes için çok daha anlaşılır hâle getirir.
 
 ---
 
 ## Sonuç
 
-OpenAPI (Swagger) dokümantasyonunu Django REST Framework projenize başarıyla entegre ettiniz. Bu otomatik ve etkileşimli dokümantasyon, geliştirme iş akışınızı önemli ölçüde iyileştirecek ve API'nizi kullanması keyifli hale getirecektir. `drf-spectacular`'dan yararlanarak dokümantasyonunuzun minimum çabayla güncel kalmasını sağlarsınız.
+Böylece OpenAPI (Swagger) dokümantasyonunu Django REST Framework projenize başarıyla entegre etmiş oldunuz. Bu otomatik ve etkileşimli dokümantasyon, geliştirme sürecinizi gözle görülür şekilde kolaylaştıracak, API’nizi de kullanması keyifli bir hâle getirecek. En güzeli, `drf-spectacular` sayesinde dokümantasyonunuz neredeyse hiç uğraşmadan güncel kalır.

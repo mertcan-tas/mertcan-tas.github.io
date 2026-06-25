@@ -11,32 +11,32 @@ lang: 'tr'
 translationKey: 'redis-rq'
 ---
 
-Modern web uygulamalarında bazı işlemler zaman alıcı olabilir; örneğin büyük dosyaları işlemek, uzun bir alıcı listesine e-posta göndermek veya karmaşık veri analizleri yapmak gibi. Bu görevleri geleneksel HTTP istek-yanıt döngüsü içinde senkron olarak çalıştırmak kötü bir kullanıcı deneyimine yol açabilir; çünkü kullanıcı arayüzünü bloke eder ve hatta zaman aşımlarına neden olabilir. İşte tam burada arka plan işi işleme devreye girer.
+Modern web uygulamalarında bazı işlemler epeyce zaman alabilir: büyük dosyaları işlemek, uzun bir listeye e-posta göndermek ya da karmaşık veri analizleri yapmak gibi. Bu işleri klasik HTTP istek-yanıt döngüsünün içinde senkron çalıştırmak kötü bir kullanıcı deneyimine yol açar; çünkü arayüzü kilitler, hatta zaman aşımına (timeout) bile neden olabilir. İşte arka plan işleri tam da burada devreye girer.
 
-Yüksek seviyeli bir Python web framework'ü olan Django, bu uzun süren işlemleri devretmek için görev kuyruklarından (task queue) yararlanabilir. Python'da arka plan görev yönetimi için popüler seçenekler arasında Redis Queue (RQ), basitliği ve mesaj aracısı olarak Redis'e dayanmasıyla öne çıkar.
+Yüksek seviyeli bir Python web framework’ü olan Django, bu uzun süren işlemleri görev kuyruklarına (task queue) devredebilir. Python tarafında arka plan görevlerini yönetmek için kullanılan popüler araçlar arasında Redis Queue (RQ); sadeliği ve mesaj aracısı olarak Redis’i kullanmasıyla öne çıkar.
 
-Bu makale, arka plan görevlerini verimli bir şekilde yönetmek için Redis RQ'yu Django projenize entegre etme sürecinde size rehberlik edecektir.
+Bu yazıda, arka plan görevlerini verimli bir şekilde yönetebilmek için Redis RQ’yu Django projenize nasıl entegre edeceğinizi adım adım anlatacağım.
 
 ---
 
 ## Neden Redis RQ?
 
-RQ, işleri kuyruğa almak ve arka planda işlemek için hafif ve anlaşılır bir Python kütüphanesidir. Avantajları şunlardır:
+RQ, işleri kuyruğa alıp arka planda çalıştırmak için kullanılan hafif ve sade bir Python kütüphanesidir. Öne çıkan tarafları şöyle:
 
-- **Basitlik:** RQ minimalist bir API'ye sahiptir; öğrenmesi ve uygulaması kolaydır.
-- **Redis tabanlı:** Veri deposu olarak Redis kullanır ve hızlı, güvenilir bir kuyruklama sağlar.
-- **Pythonic:** Standart Python fonksiyonlarından yararlanır; bu da Python geliştiricilerine doğal gelir.
-- **İzleme:** RQ, kuyrukları ve iş durumlarını izlemek için web tabanlı bir kontrol paneli (RQ Dashboard) içerir.
+- **Sadelik:** Minimalist bir API’si var; öğrenmesi ve kullanması kolay.
+- **Redis tabanlı:** Veriyi Redis’te tuttuğu için hızlı ve güvenilir bir kuyruk sağlar.
+- **Pythonic:** Sıradan Python fonksiyonlarıyla çalışır, bu yüzden Python geliştiricilerine son derece doğal gelir.
+- **İzleme:** Kuyrukları ve iş durumlarını takip edebileceğiniz web tabanlı bir paneli (RQ Dashboard) var.
 
 ---
 
 ## Django Projenizi Redis RQ ile Kurma
 
-Başlamak için temel bir Django projesine ve çalışan bir Redis sunucusuna ihtiyacınız olacak.
+Başlamak için elinizde temel bir Django projesi ve çalışan bir Redis sunucusu olması yeterli.
 
 ### **1. Gerekli Paketleri Kurun:**
 
-Önce `django-rq` (RQ'nun Django entegrasyonu) ve `redis`'i kurun:
+Önce `django-rq` (RQ’nun Django entegrasyonu) ve `redis` paketlerini kurun:
 
 ```bash
 pip install django-rq redis
@@ -44,7 +44,7 @@ pip install django-rq redis
 
 ### **2. `settings.py` İçinde Redis ve Django-RQ Yapılandırması:**
 
-`django_rq`'yu `INSTALLED_APPS`'inize ekleyin:
+`django_rq`’yu `INSTALLED_APPS`’e ekleyin:
 
 ```python
 INSTALLED_APPS = [
@@ -54,7 +54,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-Ardından Redis bağlantınızı ve RQ kuyruklarınızı yapılandırın. Redis kullanıyorsa mevcut Django cache yapılandırmanızı kullanabilir ya da özellikle RQ için yeni bağlantılar tanımlayabilirsiniz.
+Ardından Redis bağlantınızı ve RQ kuyruklarınızı tanımlayın. Redis kullanan bir Django cache yapılandırmanız varsa onu kullanabilir, ya da yalnızca RQ için yeni bağlantılar tanımlayabilirsiniz.
 
 ```python
 CACHES = {
@@ -87,11 +87,11 @@ RQ_QUEUES = {
 }
 ```
 
-Bu örnekte üç kuyruk tanımladık: `default`, `high` ve `low`. `default` kuyruğu, Django cache'inden gelen Redis bağlantısını yeniden kullanır. `high` ve `low` ise kendi açık Redis bağlantı bilgileriyle tanımlanmıştır. İhtiyaç duyduğunuz kadar kuyruk oluşturabilir ve her birini belirli bir amaca hizmet edecek şekilde kullanabilirsiniz (ör. `email_queue`, `image_processing_queue`).
+Bu örnekte üç kuyruk tanımladık: `default`, `high` ve `low`. `default` kuyruğu, Django cache’indeki Redis bağlantısını yeniden kullanıyor; `high` ve `low` ise kendi Redis bağlantı bilgileriyle ayrı ayrı tanımlı. İhtiyacınıza göre istediğiniz kadar kuyruk açabilirsiniz; her biri ayrı bir amaca hizmet edebilir (örneğin `email_queue`, `image_processing_queue`).
 
 ### **3. Arka Plan Görevlerinizi Tanımlayın:**
 
-Arka plan görevleri yalnızca sıradan Python fonksiyonlarıdır. Daha iyi bir düzen için, bu fonksiyonları barındıracak ayrı bir dosya (ör. Django uygulamalarınızdan birinde `tasks.py`) oluşturmanız önerilir.
+Arka plan görevleri aslında sıradan Python fonksiyonlarından ibaret. Düzeni korumak için bu fonksiyonları ayrı bir dosyada toplamanız iyi olur (örneğin uygulamalarınızdan birinde bir `tasks.py`).
 
 ```python
 # myapp/tasks.py
@@ -114,11 +114,11 @@ def send_email_task(recipient_email, subject, message):
     return True
 ```
 
-`django_rq`'dan gelen `@job` dekoratörü, fonksiyonunuzu bir RQ işi olarak kaydeder. 'default' dışında bir kuyruk kullanmak istiyorsanız kuyruk adını da belirtebilirsiniz.
+`django_rq`’dan gelen `@job` dekoratörü, fonksiyonunuzu bir RQ işi olarak kaydeder. ‘default’ dışında bir kuyruk kullanmak isterseniz kuyruğun adını da belirtebilirsiniz.
 
-### **4. Django View'larınızdan İşleri Kuyruğa Alma:**
+### **4. Django View’larınızdan İşleri Kuyruğa Alma:**
 
-Artık bu fonksiyonları Django view'larınızdan veya uygulamanızın diğer bölümlerinden çağırabilirsiniz; bunlar arka planda işlenmek üzere kuyruğa alınacaktır.
+Artık bu fonksiyonları Django view’larınızdan ya da uygulamanızın başka yerlerinden çağırabilirsiniz; çağırdığınız anda arka planda işlenmek üzere kuyruğa alınırlar.
 
 ```python
 # myapp/views.py
@@ -145,31 +145,31 @@ def get_job_status(request, job_id):
     return HttpResponse(f"Job {job_id} not found.")
 ```
 
-`.delay()` metodu, bir işi kuyruğa almanın kullanışlı bir yoludur. `django_rq` ayrıca açık kuyruğa alma için `django_rq.enqueue(func, *args, **kwargs)` da sunar.
+`.delay()` metodu, bir işi kuyruğa almanın en pratik yolu. `django_rq` ayrıca işi açıkça kuyruğa almak için `django_rq.enqueue(func, *args, **kwargs)` fonksiyonunu da sunar.
 
-### **5. RQ Worker'larını Çalıştırma:**
+### **5. RQ Worker’larını Çalıştırma:**
 
-İşleri kuyruğa almak yalnızca onları Redis kuyruğuna yerleştirir. Bunları gerçekten işlemek için RQ worker'larını çalıştırmanız gerekir. Bunlar, Redis kuyruklarını sürekli dinleyen ve işleri yürüten ayrı süreçlerdir.
+İşleri kuyruğa almak, onları yalnızca Redis kuyruğuna koyar. Gerçekten işlenmeleri için RQ worker’larını çalıştırmanız gerekir. Worker’lar, Redis kuyruklarını sürekli dinleyip işleri çalıştıran ayrı süreçlerdir.
 
-Terminalinizi açın ve Django projenizin kök dizinine gidin. Ardından şunu çalıştırın:
+Terminali açıp Django projenizin kök dizinine geçin ve şunu çalıştırın:
 
 ```bash
 python manage.py rqworker default high low
 ```
 
-Bu komut, `default`, `high` ve `low` kuyruklarını dinleyen worker'ları başlatır. Tanımladığınız kuyrukların herhangi bir kombinasyonunu belirtebilirsiniz. Üretim ortamlarında, RQ worker'larınızın her zaman çalıştığından ve çökerlerse otomatik olarak yeniden başlatıldığından emin olmak için Supervisor veya systemd gibi bir süreç yöneticisi kullanmanız şiddetle önerilir.
+Bu komut; `default`, `high` ve `low` kuyruklarını dinleyen worker’ları başlatır. Tanımladığınız kuyruklardan istediğiniz kombinasyonu verebilirsiniz. Üretim ortamında, worker’larınızın her zaman ayakta kalması ve çökerlerse otomatik yeniden başlaması için Supervisor ya da systemd gibi bir süreç yöneticisi kullanmanızı kesinlikle öneririm.
 
-### **6. RQ Dashboard ile İzleme (İsteğe Bağlı ama Önerilir):**
+### **6. RQ Dashboard ile İzleme (İsteğe Bağlı ama Tavsiye Edilir):**
 
-RQ Dashboard; kuyruklarınızı izlemek, iş durumlarını görüntülemek ve iş sonuçlarını incelemek için basit bir web arayüzü sağlar.
+RQ Dashboard; kuyruklarınızı izlemek, iş durumlarını görmek ve sonuçları incelemek için basit bir web arayüzü sunar.
 
-`rq-dashboard`'ı kurun:
+`rq-dashboard`’ı kurun:
 
 ```bash
 pip install rq-dashboard
 ```
 
-`settings.py` içindeki `INSTALLED_APPS`'inize `rq_dashboard` ekleyin:
+`settings.py` içindeki `INSTALLED_APPS`’e `rq_dashboard`’ı ekleyin:
 
 ```python
 INSTALLED_APPS = [
@@ -180,7 +180,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-RQ Dashboard'ın URL'lerini projenizin `urls.py` dosyasına dahil edin:
+RQ Dashboard’ın URL’lerini projenizin `urls.py` dosyasına dahil edin:
 
 ```python
 # yourproject/urls.py
@@ -201,19 +201,19 @@ urlpatterns = [
 python manage.py runserver
 ```
 
-RQ Dashboard'a `http://127.0.0.1:8000/rq/` adresine (veya Django projenizin temel URL'sinin ardından `/rq/` ekleyerek) giderek erişebilirsiniz.
+RQ Dashboard’a `http://127.0.0.1:8000/rq/` adresinden (ya da projenizin temel adresinin sonuna `/rq/` ekleyerek) ulaşabilirsiniz.
 
 ## İleri Düzey Kullanım ve Dikkat Edilecekler
 
-- **İş Durumu ve Sonuçları:** RQ'daki işlerin `queued`, `started`, `finished` ve `failed` gibi durumları vardır. Bir kuyruk nesnesindeki `fetch_job()` metodunu kullanarak bir işin durumunu ve (başarıyla tamamlandıysa) sonucunu alabilirsiniz.
-- **Hata Yönetimi:** RQ, başarısız işleri otomatik olarak bir "failed" kuyruğuna koyar; bunu kontrol panelinden inceleyebilirsiniz. Ayrıca görev fonksiyonlarınız içinde özel hata yönetimi de uygulayabilirsiniz.
-- **İşleri Zamanlama:** İşleri belirli zamanlarda veya aralıklarla çalıştırmak üzere zamanlamak için `django-rq-scheduler` veya benzeri kütüphanelerle entegre olabilirsiniz.
-- **Üretimde Worker Yönetimi:** Belirtildiği gibi, üretim ortamlarında sağlam worker yönetimi için Supervisor veya systemd gibi süreç yöneticileri kullanın. Bu, worker'larınızın her zaman çalışmasını ve etkin şekilde yönetilmesini sağlar.
-- **Eşzamanlılık (Concurrency):** Daha fazla işi aynı anda işlemek için yalnızca daha fazla RQ worker süreci çalıştırın. Her worker, dinlemek üzere yapılandırıldığı her kuyruk için aynı anda bir iş işleyebilir.
-- **Zaman Aşımları:** İşlerin süresiz çalışmasını önlemek için `RQ_QUEUES` ayarlarınızda `DEFAULT_TIMEOUT`'u yapılandırın.
+- **İş durumu ve sonuçları:** RQ’daki işlerin `queued`, `started`, `finished` ve `failed` gibi durumları olur. Bir kuyruk nesnesi üzerindeki `fetch_job()` metoduyla bir işin durumunu ve (başarıyla bittiyse) sonucunu alabilirsiniz.
+- **Hata yönetimi:** RQ, başarısız olan işleri otomatik olarak bir “failed” kuyruğuna alır; bunları panelden inceleyebilirsiniz. Dilerseniz görev fonksiyonlarınızın içine kendi hata yönetiminizi de ekleyebilirsiniz.
+- **İşleri zamanlama:** İşleri belirli saatlerde veya aralıklarla çalıştırmak isterseniz `django-rq-scheduler` gibi kütüphanelerle entegre olabilirsiniz.
+- **Üretimde worker yönetimi:** Dediğim gibi, üretim ortamında sağlam bir worker yönetimi için Supervisor ya da systemd gibi süreç yöneticileri kullanın. Böylece worker’larınız hep ayakta kalır ve rahatça yönetilir.
+- **Eşzamanlılık:** Aynı anda daha fazla iş çalıştırmak için yalnızca daha fazla RQ worker süreci başlatmanız yeterli. Her worker, dinlediği her kuyruk için aynı anda tek bir iş çalıştırır.
+- **Zaman aşımı:** İşlerin sonsuza kadar çalışmasını engellemek için `RQ_QUEUES` ayarlarınızda `DEFAULT_TIMEOUT` değerini belirleyin.
 
 ---
 
 ## Sonuç
 
-Redis RQ'yu Django uygulamanıza entegre etmek, arka plan görevlerini yönetmenin güçlü ve anlaşılır bir yolunu sunar. Zaman alıcı işlemleri ayrı bir worker sürecine devrederek web uygulamanızın yanıt verme hızını ve ölçeklenebilirliğini önemli ölçüde artırabilir, böylece çok daha iyi bir kullanıcı deneyimi sağlayabilirsiniz. Kullanım kolaylığı ve sağlam Redis altyapısıyla RQ, Django projelerinizde asenkron görevleri yönetmek için mükemmel bir seçimdir.
+Redis RQ’yu Django uygulamanıza entegre etmek, arka plan görevlerini yönetmenin güçlü ve anlaşılır bir yolunu sunar. Zaman alan işlemleri ayrı bir worker sürecine devrederek web uygulamanızın yanıt verme hızını ve ölçeklenebilirliğini ciddi şekilde artırabilir, böylece kullanıcılarınıza çok daha iyi bir deneyim sunabilirsiniz. Kullanım kolaylığı ve sağlam Redis altyapısıyla RQ, Django projelerinizde asenkron görevleri yönetmek için harika bir seçim.
