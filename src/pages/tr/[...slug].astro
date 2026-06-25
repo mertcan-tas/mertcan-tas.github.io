@@ -1,0 +1,20 @@
+---
+import { type CollectionEntry } from 'astro:content';
+import BaseLayout from '@src/layouts/BaseLayout.astro';
+import Article from '@src/components/Article.astro';
+import { getPostsByLang, getPostByTranslationKey } from '@src/i18n/content';
+
+export async function getStaticPaths() {
+	const posts = await getPostsByLang('tr');
+	return posts.map((post) => ({ params: { slug: post.id }, props: post }));
+}
+type Props = CollectionEntry<'blog'>;
+const post = Astro.props;
+const { title, seoTitle, description, coverImage, translationKey } = post.data;
+const enPost = await getPostByTranslationKey(translationKey, 'en');
+const altLocaleUrl = { en: enPost ? `/${enPost.id}/` : '/', tr: `/tr/${post.id}/` };
+---
+
+<BaseLayout title={seoTitle || title} description={description} image={coverImage?.src || undefined} altLocaleUrl={altLocaleUrl}>
+	<Article post={post} />
+</BaseLayout>
