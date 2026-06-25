@@ -1,10 +1,18 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectList from '../../components/ProjectList.astro';
-import { projects } from './projects';
+import { getProjectsByLang } from '@src/i18n/content';
 import { useTranslations } from '@src/i18n/ui';
 
 const t = useTranslations('en');
+const projects = (await getProjectsByLang('en')).map((p) => ({
+	name: p.data.name,
+	description: p.data.description,
+	tags: p.data.tags,
+	demoLink: p.data.demoLink,
+	demoLinkRel: p.data.demoLinkRel,
+	detailLink: p.data.hasDetail === false ? undefined : `/projects/${p.data.translationKey}/`
+}));
 ---
 
 <BaseLayout

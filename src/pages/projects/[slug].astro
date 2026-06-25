@@ -1,0 +1,23 @@
+---
+import { type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectArticle from '../../components/ProjectArticle.astro';
+import { getProjectsByLang, getProjectByTranslationKey } from '@src/i18n/content';
+
+export async function getStaticPaths() {
+	const items = (await getProjectsByLang('en')).filter((p) => p.data.hasDetail !== false);
+	return items.map((project) => ({ params: { slug: project.data.translationKey }, props: project }));
+}
+type Props = CollectionEntry<'projects'>;
+const project = Astro.props;
+const { name, description, translationKey } = project.data;
+const trProject = await getProjectByTranslationKey(translationKey, 'tr');
+const altLocaleUrl = {
+	en: `/projects/${translationKey}/`,
+	tr: trProject ? `/tr/projects/${translationKey}/` : '/tr/projects/'
+};
+---
+
+<BaseLayout title={name} description={description} altLocaleUrl={altLocaleUrl}>
+	<ProjectArticle project={project} />
+</BaseLayout>

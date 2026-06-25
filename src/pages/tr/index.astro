@@ -5,16 +5,22 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import Ava from '@src/assets/img/ava.jpg';
 import Prose from '@src/components/Prose.astro';
-import { projects } from '@src/pages/projects/projects';
 import ProjectList from '@src/components/ProjectList.astro';
 import PostItem from '@src/components/PostItem.astro';
-import { getPostsByLang } from '@src/i18n/content';
+import { getPostsByLang, getProjectsByLang } from '@src/i18n/content';
 import { useTranslations } from '@src/i18n/ui';
 
 type BlogPost = CollectionEntry<'blog'>;
 
 const t = useTranslations('tr');
-const top6Projects = projects.slice(0, 6);
+const top6Projects = (await getProjectsByLang('tr')).slice(0, 6).map((p) => ({
+	name: p.data.name,
+	description: p.data.description,
+	tags: p.data.tags,
+	demoLink: p.data.demoLink,
+	demoLinkRel: p.data.demoLinkRel,
+	detailLink: p.data.hasDetail === false ? undefined : `/tr/projects/${p.data.translationKey}/`
+}));
 const posts = (await getPostsByLang('tr'))
 	.sort((a: BlogPost, b: BlogPost) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.slice(0, 5);

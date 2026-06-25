@@ -42,6 +42,7 @@ export const ui = {
     'notfound.body':
       "The page you're looking for is either moved or no longer exists. Please contact the site owner that linked you to the original URL and let them know their link is broken.",
     'card.article': 'Article',
+    'card.details': 'Details',
     'card.demo': 'Demo',
     'project.fernetrix.description':
       'A developer tool for generating secure Django secret keys',
@@ -85,6 +86,7 @@ export const ui = {
     'notfound.body':
       'Aradığınız sayfa taşınmış veya artık mevcut değil. Sizi bu adrese yönlendiren site sahibine bağlantının bozuk olduğunu bildirebilirsiniz.',
     'card.article': 'Makale',
+    'card.details': 'Detay',
     'card.demo': 'Demo',
     'project.fernetrix.description':
       'Güvenli Django secret key’leri üreten bir geliştirici aracı',
