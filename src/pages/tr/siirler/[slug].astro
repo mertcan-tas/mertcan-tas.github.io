@@ -18,7 +18,7 @@ const fmtDate = (d: Date) =>
 
 <BaseLayout title={`${poem.data.title} — ${t('poems.title')}`} description={poem.data.title} altLocaleUrl={altLocaleUrl}>
 	<div class='container'>
-		<article class='max-w-2xl mx-auto'>
+		<article class='max-w-2xl'>
 			<a href='/tr/siirler/' class='text-sm underline opacity-70 hover:opacity-100'>&laquo; {t('poems.title')}</a>
 			<h1 class='text-3xl font-bold mt-4 mb-1 leading-tight'>{poem.data.title}</h1>
 			<p class='text-sm text-zinc-500 dark:text-zinc-400 mb-8'>{fmtDate(poem.data.date)}</p>
