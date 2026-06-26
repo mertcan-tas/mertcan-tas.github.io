@@ -1,35 +1,59 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '@src/layouts/BaseLayout.astro';
+import FormattedDate from '@src/components/FormattedDate.astro';
 import { getPoems } from '@src/i18n/content';
 import { useTranslations } from '@src/i18n/ui';
+
+type Poem = CollectionEntry<'poems'>;
 
 const t = useTranslations('tr');
 const poems = await getPoems();
 const altLocaleUrl = { en: '/', tr: '/tr/siirler/' };
-const fmtDate = (d: Date) =>
-	d.toLocaleDateString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+function groupByYear(items: Poem[]) {
+	const grouped = items.reduce((acc, p) => {
+		const year = p.data.date.getFullYear();
+		if (!acc[year]) acc[year] = [];
+		acc[year].push(p);
+		return acc;
+	}, {} as Record<number, Poem[]>);
+
+	return Object.entries(grouped)
+		.sort(([a], [b]) => Number(b) - Number(a))
+		.map(([year, list]) => ({
+			year: Number(year),
+			list: list.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
+		}));
+}
+
+const grouped = groupByYear(poems);
 ---
 
 <BaseLayout title={t('poems.title')} description={t('poems.description')} altLocaleUrl={altLocaleUrl}>
 	<div class='container'>
-		<div class='mb-12'>
+		<div class='mb-10'>
 			<h1 class='text-3xl font-bold mb-2'>{t('poems.title')}</h1>
 			<p class='text-zinc-700 dark:text-zinc-300 text-lg'>{t('poems.description')}</p>
 		</div>
-		<div class='max-w-2xl mx-auto flex flex-col gap-16'>
-			{
-				poems.map((poem) => (
-					<article>
-						<h2 class='text-2xl font-bold mb-1'>
-							<a href={`/tr/siirler/${poem.id}/`} class='hover:underline'>{poem.data.title}</a>
-						</h2>
-						<p class='text-sm text-zinc-500 dark:text-zinc-400 mb-6'>{fmtDate(poem.data.date)}</p>
-						<p class='whitespace-pre-line font-serif text-lg leading-loose text-zinc-800 dark:text-zinc-200'>
-							{poem.data.text.trim()}
-						</p>
-					</article>
-				))
-			}
-		</div>
+		{
+			grouped.map(({ year, list }) => (
+				<div class='mb-8'>
+					<h2 class='text-2xl font-bold mb-4'>{year}</h2>
+					<div>
+						{list.map((poem) => (
+							<div class='flex flex-col sm:flex-row gap-2 sm:items-center border-b py-2 mb-1 dark:border-b-zinc-700'>
+								<div class='text-zinc-700 text-sm w-24 dark:text-zinc-300 shrink-0'>
+									<FormattedDate date={poem.data.date} />
+								</div>
+								<h3 class='font-medium grow'>
+									<a href={`/tr/siirler/${poem.id}/`}>{poem.data.title}</a>
+								</h3>
+							</div>
+						))}
+					</div>
+				</div>
+			))
+		}
 	</div>
 </BaseLayout>
