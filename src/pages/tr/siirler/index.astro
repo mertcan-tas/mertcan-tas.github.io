@@ -20,7 +20,9 @@ const fmtDate = (d: Date) =>
 			{
 				poems.map((poem) => (
 					<article>
-						<h2 class='text-2xl font-bold mb-1'>{poem.data.title}</h2>
+						<h2 class='text-2xl font-bold mb-1'>
+							<a href={`/tr/siirler/${poem.id}/`} class='hover:underline'>{poem.data.title}</a>
+						</h2>
 						<p class='text-sm text-zinc-500 dark:text-zinc-400 mb-6'>{fmtDate(poem.data.date)}</p>
 						<p class='whitespace-pre-line font-serif text-lg leading-loose text-zinc-800 dark:text-zinc-200'>
 							{poem.data.text.trim()}
