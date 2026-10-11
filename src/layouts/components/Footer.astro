@@ -57,8 +57,7 @@ const linkClass = 'text-[0.875rem] leading-5 text-[var(--text-muted)] transition
 			<div
 				class='mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border)] pt-5 font-mono text-[0.75rem] uppercase leading-4 tracking-[0.1em] text-[var(--text-faint)]'
 			>
-				<span>{Astro.site?.hostname}</span>
-				<span>Türkiye</span>
+				<span class='normal-case'>{Astro.site?.hostname}</span>
 				<span>{toRoman(new Date().getFullYear())}</span>
 			</div>
 		</div>
