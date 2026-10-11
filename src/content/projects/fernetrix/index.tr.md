@@ -4,6 +4,7 @@ description: 'Güvenli Django secret key’leri üreten bir geliştirici aracı'
 tags: ['Tool', 'Django']
 demoLink: 'https://www.fernetrix.com'
 demoLinkRel: 'nofollow noopener noreferrer'
+coverImage: 'cover.png'
 order: 2
 lang: 'tr'
 translationKey: 'fernetrix'

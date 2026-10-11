@@ -1,64 +1,9 @@
 ---
-import { SITE_TITLE, SITE_TAGLINE, SITE_DESCRIPTION } from '../consts';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { Image } from 'astro:assets';
-import type { CollectionEntry } from 'astro:content';
-import Ava from '@src/assets/img/ava.jpg';
-import Prose from '../components/Prose.astro';
-import ProjectList from '../components/ProjectList.astro';
-import PostItem from '../components/PostItem.astro';
-import { getPostsByLang, getProjectsByLang } from '@src/i18n/content';
-import { useTranslations } from '@src/i18n/ui';
-
-type BlogPost = CollectionEntry<'blog'>;
-
-const t = useTranslations('en');
-const top6Projects = (await getProjectsByLang('en')).slice(0, 6).map((p) => ({
-	name: p.data.name,
-	description: p.data.description,
-	tags: p.data.tags,
-	demoLink: p.data.demoLink,
-	demoLinkRel: p.data.demoLinkRel,
-	repoLink: p.data.repoLink,
-	detailLink: p.data.hasDetail === false ? undefined : `/projects/${p.data.translationKey}/`
-}));
-const posts = (await getPostsByLang('en'))
-	.sort((a: BlogPost, b: BlogPost) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.slice(0, 5);
+import { SITE_TITLE, SITE_TAGLINE, SITE_DESCRIPTION } from '@src/consts';
+import BaseLayout from '@src/layouts/BaseLayout.astro';
+import Home from '@src/components/Home.astro';
 ---
 
 <BaseLayout title={SITE_TITLE + ' - ' + SITE_TAGLINE} description={SITE_DESCRIPTION}>
-	<div class='container'>
-		<div class='w-full md:flex md:items-center gap-16 mb-10'>
-			<div class='text-pretty leading-9'>
-				<h1 class='text-4xl font-bold mb-4'>{t('home.greeting')}</h1>
-				<Prose>
-					<div class='text-lg'>
-						<p>{t('home.intro1')}</p>
-						<p>{t('home.intro2')}</p>
-					</div>
-				</Prose>
-			</div>
-			<Image src={Ava} alt='Mertcan Taş' width={300} loading='eager' class='rounded-3xl rotate-0 mx-4 md:mx-0' />
-		</div>
-		<main>
-			<div class='mt-6 mb-12'>
-				<div class='flex justify-between gap-2 border-b mb-1 dark:border-b-zinc-700'>
-					<h2 class='text-lg font-bold mb-3'>{t('home.recentPosts')}</h2>
-					<a href='/posts/' class='inline-block py-2 underline dark:prose-invert'>{t('home.allPosts')}</a>
-				</div>
-				<div>
-					{posts.map((post: BlogPost) => <PostItem post={post} />)}
-				</div>
-				<div class='text-right'></div>
-			</div>
-			<div>
-				<div class='flex justify-between gap-2 mb-1'>
-					<h2 class='text-lg font-bold mb-3'>{t('home.myProjects')}</h2>
-					<a href='/projects/' class='inline-block py-2 underline dark:prose-invert'>{t('home.allProjects')}</a>
-				</div>
-				<ProjectList projects={top6Projects} />
-			</div>
-		</main>
-	</div>
+	<Home lang='en' />
 </BaseLayout>

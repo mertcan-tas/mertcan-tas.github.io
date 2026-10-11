@@ -4,17 +4,6 @@ interface Props {
 }
 
 const { date } = Astro.props;
-const lang = Astro.currentLocale ?? 'en';
-const locale = lang === 'tr' ? 'tr-TR' : 'en-US';
 ---
 
-<time datetime={date.toISOString()}>
-	{
-		date.toLocaleDateString(locale, {
-			year: 'numeric',
-			month: 'short',
-			day: '2-digit',
-			timeZone: 'UTC',
-		})
-	}
-</time>
+<time datetime={date.toISOString()} class='tabular-nums'>{date.toISOString().slice(0, 10).replaceAll('-', '.')}</time>

@@ -5,14 +5,13 @@ type Props = HTMLAttributes<'a'>;
 
 const { href, class: className, ...props } = Astro.props;
 
-const { pathname } = Astro.url;
-const subpath = pathname.match(/[^\/]+/g);
-const isActive = href === pathname || href === '/' + subpath?.[0];
+const pathname = Astro.url.pathname.replace(/\/?$/, '/');
+const isActive = typeof href === 'string' && !href.includes('#') && href !== '/' && pathname.startsWith(href);
 ---
 
 <a
 	href={href}
-	class:list={[className, { 'border-b border-zinc-500 dark:border-zinc-300': isActive }, { 'text-zinc-600 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-zinc-50': !isActive }, { 'text-zinc-950 dark:text-zinc-50': isActive }]}
+	class:list={['transition-colors duration-150 hover:text-[var(--text)]', className, isActive ? 'text-[var(--text)]' : 'text-[var(--text-nav)]']}
 	{...props}
 >
 	<slot />

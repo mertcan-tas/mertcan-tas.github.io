@@ -1,21 +1,66 @@
 ---
+import { SITE_TITLE } from '@src/consts';
 import { useTranslations, type Lang } from '@src/i18n/ui';
-const today = new Date();
+
 const lang = (Astro.currentLocale ?? 'en') as Lang;
 const t = useTranslations(lang);
+
+const toRoman = (n: number) => {
+	const map: [number, string][] = [[1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']];
+	let out = '';
+	for (const [value, numeral] of map) {
+		while (n >= value) {
+			out += numeral;
+			n -= value;
+		}
+	}
+	return out;
+};
+
+const siteLinks = [
+	{ link: `/posts/`, label: t('nav.posts') },
+	{ link: `/projects/`, label: t('nav.projects') },
+	{ link: '/poems/', label: t('nav.poems') },
+	{ link: `/tags/`, label: t('nav.tags') },
+	{ link: `/#contact`, label: t('nav.contact') }
+];
+const linkClass = 'text-[0.875rem] leading-5 text-[var(--text-muted)] transition-colors duration-150 hover:text-[var(--text)]';
 ---
 
-<footer class='container mt-8'>
-	<!-- <div class='justify-center flex gap-4 py-8 prose dark:prose-invert text-sm'>
-		<a href='#'>Newsletter</a>
-		<a href='#'>Buy me a Coffee</a>
-		<a href='#'>RSS</a>
-	</div> -->
-
-	<div class='py-4 border-t dark:border-t-zinc-700'>
-		<div class='md:flex text-sm text-zinc-500 dark:text-zinc-300 prose dark:prose-invert justify-between'>
-			<div>Copyright © {today.getFullYear()} Mertcan Taş.</div>
-			<div>{t('footer.poweredPre')} <a href='https://astro.build' target='_blank' rel='nofollow noopener'>Astro</a> {t('footer.poweredPost')}</div>
+<!-- No top margin: the page above owns its bottom padding, so this rule
+     lands directly under the last section instead of floating in a band of
+     dead space. Padded to the same frame as the nav and the page body. -->
+<footer class='border-t border-[var(--border)]'>
+	<div class='px-5 py-12 md:px-10'>
+		<div class='mx-auto max-w-[var(--frame)] px-6 md:px-10'>
+			<div class='flex flex-col gap-10 sm:flex-row sm:justify-between'>
+				<div class='max-w-[32ch]'>
+					<p class='text-[0.875rem] font-medium leading-5 text-[var(--text)]'>{SITE_TITLE}</p>
+					<p class='mt-2 text-[0.875rem] leading-5 text-[var(--text-muted)]'>{t('footer.bio')}</p>
+				</div>
+				<div class='flex gap-16 sm:gap-24'>
+					<nav aria-label={t('footer.site')}>
+						<p class='label'>{t('footer.site')}</p>
+						<ul class='mt-3 space-y-2'>
+							{siteLinks.map((item) => <li><a href={item.link} class={linkClass}>{item.label}</a></li>)}
+						</ul>
+					</nav>
+					<nav aria-label={t('footer.elsewhere')}>
+						<p class='label'>{t('footer.elsewhere')}</p>
+						<ul class='mt-3 space-y-2'>
+							<li><a href='https://github.com/mertcan-tas' target='_blank' rel='noopener noreferrer' class:list={['link-arrow', linkClass]}>GitHub</a></li>
+							<li><a href='/rss.xml' class:list={['link-arrow', linkClass]}>RSS</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<div
+				class='mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border)] pt-5 font-mono text-[0.75rem] uppercase leading-4 tracking-[0.1em] text-[var(--text-faint)]'
+			>
+				<span>{Astro.site?.hostname}</span>
+				<span>Türkiye</span>
+				<span>{toRoman(new Date().getFullYear())}</span>
+			</div>
 		</div>
 	</div>
 </footer>

@@ -1,0 +1,22 @@
+---
+interface Props {
+	title: string;
+	lead?: string;
+	back?: { href: string; label: string };
+}
+const { title, lead, back } = Astro.props;
+---
+
+<section class='px-6 py-16 md:px-10 md:py-20'>
+	{
+		back && (
+			<a href={back.href} class='label mb-8 inline-block transition-colors duration-150 hover:text-[var(--text)]'>
+				← {back.label}
+			</a>
+		)
+	}
+	<slot name='eyebrow' />
+	<h1 class='t-display max-w-[30ch] rise' style='animation-delay: 40ms'>{title}</h1>
+	{lead && <p class='t-lead mt-5 max-w-[58ch] text-[var(--text-muted)] rise' style='animation-delay: 100ms'>{lead}</p>}
+	<slot />
+</section>

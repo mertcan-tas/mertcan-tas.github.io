@@ -1,30 +1,27 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import ProjectList from '../../components/ProjectList.astro';
+import BaseLayout from '@src/layouts/BaseLayout.astro';
+import PageHero from '@src/components/PageHero.astro';
+import ProjectList from '@src/components/ProjectList.astro';
+import Section from '@src/components/Section.astro';
 import { getProjectsByLang } from '@src/i18n/content';
 import { useTranslations } from '@src/i18n/ui';
 
 const t = useTranslations('en');
 const projects = (await getProjectsByLang('en')).map((p) => ({
+	key: p.data.translationKey,
 	name: p.data.name,
 	description: p.data.description,
-	tags: p.data.tags,
 	demoLink: p.data.demoLink,
 	demoLinkRel: p.data.demoLinkRel,
 	repoLink: p.data.repoLink,
+	coverImage: p.data.coverImage,
 	detailLink: p.data.hasDetail === false ? undefined : `/projects/${p.data.translationKey}/`
 }));
 ---
 
-<BaseLayout
-	title={t('projects.title')}
-	description={t('projects.description')}
->
-  <div class='container'>
-    <div class="mb-10">
-      <h1 class="text-3xl font-bold mb-2">{t('projects.title')}</h1>
-      <p class="text-zinc-700 dark:text-zinc-300 text-lg">{t('projects.description')}</p>
-    </div>
-    <ProjectList projects={projects}/>
-  </div>
+<BaseLayout title={t('projects.title')} description={t('projects.description')}>
+	<PageHero title={t('projects.title')} lead={t('projects.description')} />
+	<Section title={t('nav.projects')} variant='grid'>
+		<ProjectList projects={projects} />
+	</Section>
 </BaseLayout>

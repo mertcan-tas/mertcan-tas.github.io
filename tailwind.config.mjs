@@ -1,24 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'selector',
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
 	theme: {
-    container: {
-			center: true,
-      padding: '1rem',
-			screens: {
-				xl: '1024px'
-			}
-		},
 		extend: {
-      typography: {
-        DEFAULT: {
-          css: {
-            maxWidth: '100%', // add required value here
-          }
-        }
-      }
-    },
+			fontFamily: {
+				sans: ['Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+				mono: ['Geist Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace']
+			},
+			screens: {
+				toc: '1420px'
+			}
+		}
 	},
-	plugins: [require('@tailwindcss/typography')],
-}
+	plugins: []
+};

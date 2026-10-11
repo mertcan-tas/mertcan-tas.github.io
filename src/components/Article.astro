@@ -1,9 +1,8 @@
 ---
 import Prose from './Prose.astro';
+import PageHero from './PageHero.astro';
 import { Image } from 'astro:assets';
 import FormattedDate from './FormattedDate.astro';
-import AboutTheAuthor from './widgets/AboutTheAuthor.astro';
-import TableOfContent from './widgets/TableOfContent.astro';
 import { slugify } from '../utils';
 import { loadEnv } from 'vite';
 import { render, type CollectionEntry } from 'astro:content';
@@ -12,112 +11,57 @@ import { useTranslations, type Lang } from '@src/i18n/ui';
 const { GISCUS_REPO, GISCUS_REPO_ID, GISCUS_CATEGORY, GISCUS_CATEGORY_ID } = loadEnv(process.env.NODE_ENV || 'production', process.cwd(), '');
 
 const { post } = Astro.props as { post: CollectionEntry<'blog'> };
-const { title, coverImage, pubDate, updatedDate, tags } = post.data;
-const { Content, headings } = await render(post);
+const { title, description, coverImage, pubDate, updatedDate, tags } = post.data;
+const { Content } = await render(post);
 const lang = (Astro.currentLocale ?? 'en') as Lang;
 const t = useTranslations(lang);
-const base = lang === 'tr' ? '/tr' : '';
 ---
 
-<div class='container lg:flex gap-10'>
-	<main
-		class='overflow-hidden grow'
-	>
-		<article>
-			<Prose>
-				<div>
-					<h1 class='!my-1 leading-tight'>{title}</h1>
-          <div class='text-sm font-[500] mt-2 sm:mt-0 py-1 md:text-right flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center'>
-            {
-              <div class='flex gap-2'>
-                {
-                  (tags || [] )?.map((tag: string) => (
-                    <a
-                      class='border border-zinc-300 dark:border-zinc-700 rounded-2xl
-                        text-sm text-zinc-700 dark:text-zinc-300 no-underline px-2 py-0.5
-                        transition-all duration-700
-                      hover:border-zinc-700 dark:hover:border-zinc-300'
-                      href={`${base}/tags/${slugify(tag)}`}>
-                      {tag}
-                    </a>
-                  ))
-                }
-              </div>
-            }
-            <div>
-              {
-                updatedDate ?
-                  <>{t('post.updatedOn')} <strong><FormattedDate date={updatedDate} /></strong></>
-                :
-                  <>{t('post.publishedOn')} <strong><FormattedDate date={pubDate} /></strong></>
-              }
-            </div>
-          </div>
-				</div>
-        <div class='py-3 overflow-hidden'>
-          {coverImage && <Image class='rounded-3xl w-full m-0 lg:mb-2' src={coverImage} alt={title} loading='eager' />}
-        </div>
-				<Content />
-			</Prose>
-      {
-        GISCUS_REPO &&
-          <script
-            id='giscus-script'
-            is:inline
-            src='https://giscus.app/client.js'
-            data-repo={GISCUS_REPO}
-            data-repo-id={GISCUS_REPO_ID}
-            data-category={GISCUS_CATEGORY}
-            data-category-id={GISCUS_CATEGORY_ID}
-            data-mapping='pathname'
-            data-strict='0'
-            data-reactions-enabled='1'
-            data-emit-metadata='0'
-            data-input-position='bottom'
-            data-theme='preferred_color_scheme'
-            data-lang={lang}
-            crossorigin='anonymous'
-            async></script>
-      }
-
-		</article>
-	</main>
-  <div class='shrink-0 w-[280px] hidden md:block'>
-    <div class='mb-4'>
-			<AboutTheAuthor />
+<article>
+	<PageHero title={title} lead={description} back={{ href: `/posts/`, label: t('nav.posts') }}>
+		<div class='mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 rise' style='animation-delay: 160ms'>
+			<span class='font-mono text-[0.75rem] leading-4 text-[var(--text-faint)]'>
+				{updatedDate ? t('post.updatedOn') : t('post.publishedOn')}
+				<FormattedDate date={updatedDate ?? pubDate} />
+			</span>
+			<span class='flex flex-wrap gap-2'>
+				{(tags || []).map((tag: string) => <a class='chip' href={`/tags/${slugify(tag)}/`}>{tag}</a>)}
+			</span>
 		</div>
-		<TableOfContent headings={headings} />
-	</div>
-</div>
-
-<script async is:inline>
-	const anchors = document.querySelectorAll('.prose h2[id], .prose h3[id]');
-	const links = document.querySelectorAll('nav.toc ul li a');
-
-	function observeToc() {
-		if (typeof anchors != 'undefined' && anchors != null && typeof links != 'undefined' && links != null) {
-			let scrollTop = window.scrollY;
-
-			// highlight the last scrolled-to: set everything inactive first
-			for (const link of links) {
-				link.classList.add('border-transparent', 'text-inherit');
-				link.classList.remove('bg-[var(--background-surface-color)]', 'border-[var(--soft-border-color)]', 'text-[var(--link-color)]');
-			}
-			// then iterate backwards, on the first match highlight it and break
-			for (var i = anchors.length - 1; i >= 0; i--) {
-				if (scrollTop > anchors[i].offsetTop - 80) {
-					links[i].classList.remove('border-transparent', 'text-inherit');
-					links[i].classList.add('bg-[var(--background-surface-color)]', 'border-[var(--soft-border-color)]', 'text-[var(--link-color)]');
-					break;
-				}
-			}
+	</PageHero>
+	<div class='border-t border-[var(--border)] px-6 py-10 md:px-10 md:py-14'>
+		{
+			coverImage && (
+				<div class='mb-10 max-w-[var(--col)] overflow-hidden rounded-[10px] border border-[var(--border)] bg-[var(--bg-card)]'>
+					<Image class='w-full' src={coverImage} alt={title} loading='eager' />
+				</div>
+			)
 		}
-	}
-
-	window.addEventListener('scroll', (event) => {
-		observeToc(event);
-	});
-	window.addEventListener('hashchange', (event) => {
-		observeToc(event);
-	});
-</script>
+		<Prose>
+			<Content />
+		</Prose>
+		{
+			GISCUS_REPO && (
+				<div class='mt-16 max-w-[var(--col)]'>
+					<script
+						id='giscus-script'
+						is:inline
+						src='https://giscus.app/client.js'
+						data-repo={GISCUS_REPO}
+						data-repo-id={GISCUS_REPO_ID}
+						data-category={GISCUS_CATEGORY}
+						data-category-id={GISCUS_CATEGORY_ID}
+						data-mapping='pathname'
+						data-strict='0'
+						data-reactions-enabled='1'
+						data-emit-metadata='0'
+						data-input-position='bottom'
+						data-theme='dark'
+						data-lang={lang}
+						crossorigin='anonymous'
+						async></script>
+				</div>
+			)
+		}
+	</div>
+</article>

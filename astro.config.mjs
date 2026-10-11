@@ -8,14 +8,9 @@ import partytown from "@astrojs/partytown";
 
 export default defineConfig({
   site: 'https://mertcan-tas.github.io',
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'tr'],
-    routing: { prefixDefaultLocale: false }
-  },
   integrations: [
     mdx(),
-    sitemap({ i18n: { defaultLocale: 'en', locales: { en: 'en', tr: 'tr' } } }),
+    sitemap(),
     tailwind(),
     partytown()
   ],

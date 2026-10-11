@@ -1,5 +1,5 @@
 export const defaultLang = 'en';
-export const languages = { en: 'EN', tr: 'TR' } as const;
+export const languages = { en: 'EN' } as const;
 
 export const ui = {
   en: {
@@ -7,17 +7,35 @@ export const ui = {
     'nav.projects': 'Projects',
     'nav.tags': 'Tags',
     'nav.poems': 'Poems',
+    'nav.contact': 'Contact',
+    'nav.getInTouch': 'Get in touch',
+    'nav.home': 'Home',
+    'home.strip': "Writing about Vue, Django, and whatever I'm tinkering with",
+    'home.readWriting': 'Read the writing',
+    'home.seeAllPosts': 'See all {n} posts',
+    'home.seeAllProjects': 'See all {n} projects',
+    'home.seeAllPoems': 'See all {n} poems',
+    'home.contactLead':
+      'Based in Turkey. The easiest way to reach me is GitHub: open an issue, start a discussion, or just say hi.',
+    'footer.bio': 'Software developer. Vue, Django, and REST APIs.',
+    'footer.site': 'Site',
+    'footer.elsewhere': 'Elsewhere',
+    'notfound.back': 'Back to home',
     'poems.title': 'Poems',
     'poems.description': 'A few poems I write every now and then.',
-    'home.greeting': "👋 Hey, I’m Mertcan Taş!",
+    'home.greeting': "Mertcan Taş",
     'home.intro1':
       "I’m a software developer from Turkey, mostly working with Vue, Django, and REST APIs. This is just my own little corner of the web — a place to jot down what I learn and tinker with the occasional side project.",
     'home.intro2':
       "Most of what I write comes from things I run into while building: bugs I fixed, tools I liked, ideas I wanted to remember. Writing them down helps me learn — and maybe it helps someone else too.",
-    'home.recentPosts': 'Recent Posts',
-    'home.allPosts': 'All posts »',
-    'home.myProjects': 'My Projects',
-    'home.allProjects': 'All projects »',
+    'home.recentPosts': 'Writing',
+    'home.allPosts': 'all →',
+    'home.myProjects': 'Projects',
+    'home.allProjects': 'all →',
+    'home.poems': 'Poems',
+    'home.allPoems': 'all →',
+    'home.contact': 'Contact',
+    'home.contactText': 'Easiest way to reach me is',
     'posts.title': 'All posts',
     'posts.description': 'Articles, guides, tutorials about full-stack development.',
     'tags.title': 'All Tags',
@@ -50,54 +68,6 @@ export const ui = {
     'card.github': 'GitHub',
     'project.fernetrix.description':
       'A developer tool for generating secure Django secret keys',
-  },
-  tr: {
-    'nav.posts': 'Yazılar',
-    'nav.projects': 'Projeler',
-    'nav.tags': 'Etiketler',
-    'nav.poems': 'Şiirler',
-    'poems.title': 'Şiirler',
-    'poems.description': 'Ara sıra yazdığım birkaç şiir.',
-    'home.greeting': "👋 Merhaba, ben Mertcan Taş!",
-    'home.intro1':
-      "Türkiye'den bir yazılım geliştiricisiyim; çoğunlukla Vue, Django ve REST API'lerle uğraşıyorum. Burası benim küçük köşem — öğrendiklerimi not aldığım ve ara sıra yan projeler kurcaladığım bir yer.",
-    'home.intro2':
-      "Yazdıklarımın çoğu, bir şeyler geliştirirken karşıma çıkanlardan doğuyor: çözdüğüm bug'lar, beğendiğim araçlar, aklımda kalsın istediğim fikirler. Bunları yazmak hem öğrenmeme yardımcı oluyor, hem de belki bir başkasının işine yarar.",
-    'home.recentPosts': 'Son Yazılar',
-    'home.allPosts': 'Tüm yazılar »',
-    'home.myProjects': 'Projelerim',
-    'home.allProjects': 'Tüm projeler »',
-    'posts.title': 'Tüm Yazılar',
-    'posts.description': 'Full-stack geliştirme üzerine makaleler, rehberler ve eğitimler.',
-    'tags.title': 'Tüm Etiketler',
-    'tags.description':
-      'Yazı etiketleri: içeriği kategorilere ayıran, gezinmeyi ve aranabilirliği kolaylaştıran kısa anahtar kelimeler.',
-    'tags.taggedWith': 'Şununla Etiketlenen Tüm Yazılar:',
-    'projects.title': 'Tüm Projelerim',
-    'projects.description': 'Gerçek projelerden açık kaynak projelere kadar tüm portföyüm.',
-    'post.publishedOn': 'Yayınlanma',
-    'post.updatedOn': 'Güncelleme',
-    'footer.poweredPre': '',
-    'footer.poweredPost': 'ile geliştirildi',
-    'author.heading': 'Yazar Hakkında',
-    'author.bio':
-      "Mertcan Taş, Türkiye'den bir yazılım geliştiricisi. Çoğunlukla Vue, Django ve REST API'lerle uğraşıyor ve yol boyunca öğrendiklerini yazmayı seviyor.",
-    'about.title': 'Hakkımda',
-    'about.p1':
-      "Türkiye'den bir yazılım geliştiricisiyim; çoğunlukla Vue, Django ve REST API'lerle çalışıyorum. Bir şeyler kurmayı, söküp tekrar takmayı ve nasıl çalıştığını anlamayı seviyorum.",
-    'about.p2':
-      "Burası sadece benim kişisel köşem. Öğrendiklerimi not almak ve ara sıra bir araç ya da yan proje paylaşmak için kullanıyorum — çoğunlukla unutmayayım diye, belki bir de başkasının vaktini kurtarır diye.",
-    'about.p3':
-      "Kod yazmak benim için yalnızca bir iş değil, gerçekten keyif aldığım bir şey. İşleri sade tutmayı ve kullanması keyifli araçlar yapmayı seviyorum. Öğrendiklerimi yazmak da bu işte gelişmemin bir parçası.",
-    'notfound.title': 'Sayfa Bulunamadı',
-    'notfound.body':
-      'Aradığınız sayfa taşınmış veya artık mevcut değil. Sizi bu adrese yönlendiren site sahibine bağlantının bozuk olduğunu bildirebilirsiniz.',
-    'card.article': 'Makale',
-    'card.details': 'Detay',
-    'card.demo': 'Demo',
-    'card.github': 'GitHub',
-    'project.fernetrix.description':
-      'Güvenli Django secret key’leri üreten bir geliştirici aracı',
   },
 } as const;
 

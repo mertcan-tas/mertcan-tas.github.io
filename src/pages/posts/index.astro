@@ -1,7 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PostsByYear from '../../components/PostsByYear.astro';
+import BaseLayout from '@src/layouts/BaseLayout.astro';
+import PageHero from '@src/components/PageHero.astro';
+import PostsByYear from '@src/components/PostsByYear.astro';
 import { getPostsByLang } from '@src/i18n/content';
 import { useTranslations } from '@src/i18n/ui';
 
@@ -14,11 +15,6 @@ const posts = (await getPostsByLang('en')).sort((a: BlogPost, b: BlogPost) => b.
 ---
 
 <BaseLayout title={title} description={description}>
-	<div class='container'>
-		<div class='mb-10'>
-			<h1 class='text-3xl font-bold mb-2'>{title}</h1>
-			<p class='text-zinc-700 dark:text-zinc-300 text-lg'>{description}</p>
-		</div>
-		<PostsByYear posts={posts} />
-	</div>
+	<PageHero title={title} lead={description} />
+	<PostsByYear posts={posts} />
 </BaseLayout>

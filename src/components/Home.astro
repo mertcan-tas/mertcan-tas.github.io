@@ -1,0 +1,97 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import PostItem from './PostItem.astro';
+import PoemItem from './PoemItem.astro';
+import ProjectList from './ProjectList.astro';
+import Section from './Section.astro';
+import { getPostsByLang, getProjectsByLang, getPoems } from '@src/i18n/content';
+import { useTranslations, type Lang } from '@src/i18n/ui';
+
+type BlogPost = CollectionEntry<'blog'>;
+
+const { lang } = Astro.props as { lang: Lang };
+const t = useTranslations(lang);
+
+const allPosts = (await getPostsByLang(lang)).sort((a: BlogPost, b: BlogPost) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = allPosts.slice(0, 5);
+const allPoems = await getPoems();
+const poems = allPoems.slice(0, 5);
+const allProjects = await getProjectsByLang(lang);
+const projects = allProjects.slice(0, 8).map((p) => ({
+	key: p.data.translationKey,
+	name: p.data.name,
+	description: p.data.description,
+	demoLink: p.data.demoLink,
+	demoLinkRel: p.data.demoLinkRel,
+	repoLink: p.data.repoLink,
+	coverImage: p.data.coverImage,
+	detailLink: p.data.hasDetail === false ? undefined : `/projects/${p.data.translationKey}/`
+}));
+---
+
+<section class='px-6 py-16 md:px-10 md:py-20'>
+	<h1 class='t-display rise' style='animation-delay: 40ms'>{t('home.greeting')}</h1>
+	<p class='t-lead mt-5 max-w-[58ch] text-[var(--text-muted)] rise' style='animation-delay: 100ms'>{t('home.intro1')}</p>
+	<div class='mt-8 flex flex-wrap gap-3 rise' style='animation-delay: 160ms'>
+		<a href='/posts/' class='btn-solid'>{t('home.readWriting')}</a>
+		<a href='#contact' class='btn-outline'>{t('nav.getInTouch')}</a>
+	</div>
+</section>
+
+<div class='border-t border-[var(--border)] px-6 py-4 md:px-10'>
+	<div class='flex items-center gap-6'>
+		<span class='hidden h-px flex-1 bg-[var(--border)] sm:block'></span>
+		<p class='text-center font-mono text-[0.8125rem] leading-5 tracking-[0.025em] text-[var(--text-muted)]'>{t('home.strip')}</p>
+		<span class='hidden h-px flex-1 bg-[var(--border)] sm:block'></span>
+	</div>
+</div>
+
+<Section title={t('home.recentPosts')}>
+	<ul class='divide-y divide-[var(--border)]'>
+		{posts.map((post: BlogPost) => <PostItem post={post} />)}
+		<li>
+			<a href='/posts/' class='link-accent py-4'>
+				{t('home.seeAllPosts').replace('{n}', String(allPosts.length))}
+				<span aria-hidden='true'>→</span>
+			</a>
+		</li>
+	</ul>
+</Section>
+
+<Section title={t('home.myProjects')} id='projects' variant='grid'>
+	<ProjectList projects={projects} />
+	<a href='/projects/' class='link-accent mt-9'>
+		{t('home.seeAllProjects').replace('{n}', String(allProjects.length))}
+		<span aria-hidden='true'>→</span>
+	</a>
+</Section>
+
+<Section title={t('nav.poems')} id='poems'>
+	<ul class='divide-y divide-[var(--border)]'>
+		{poems.map((poem) => <PoemItem poem={poem} />)}
+		<li>
+			<a href='/poems/' class='link-accent py-4'>
+				{t('home.seeAllPoems').replace('{n}', String(allPoems.length))}
+				<span aria-hidden='true'>→</span>
+			</a>
+		</li>
+	</ul>
+</Section>
+
+<Section title={t('home.contact')} id='contact' variant='text'>
+	<p class='t-sub'>
+		<a
+			href='https://github.com/mertcan-tas'
+			target='_blank'
+			rel='noopener noreferrer'
+			class='underline decoration-[var(--accent)] decoration-1 underline-offset-[0.25em] transition-colors duration-150 hover:text-[var(--accent)]'
+		>
+			github.com/mertcan-tas
+		</a>
+	</p>
+	<p class='t-lead mt-4 max-w-[56ch] text-[var(--text-muted)]'>{t('home.contactLead')}</p>
+	<div class='t-sm mt-6 flex flex-wrap items-center gap-x-6 gap-y-2'>
+		<a href='https://github.com/mertcan-tas' target='_blank' rel='noopener noreferrer' class='link-arrow text-[var(--text-muted)] transition-colors duration-150 hover:text-[var(--text)]'>GitHub</a>
+		<a href='/rss.xml' class='link-arrow text-[var(--text-muted)] transition-colors duration-150 hover:text-[var(--text)]'>RSS</a>
+	</div>
+</Section>

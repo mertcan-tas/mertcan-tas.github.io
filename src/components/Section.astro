@@ -1,0 +1,27 @@
+---
+interface Props {
+	title: string | number;
+	id?: string;
+	/** `list` hugs divided rows, `grid` gives cards room, `text` sits between. */
+	variant?: 'list' | 'grid' | 'text';
+}
+const { title, id, variant = 'list' } = Astro.props;
+const body = {
+	list: 'pb-6 pt-2 lg:py-6',
+	grid: 'pb-10 pt-6 lg:py-10',
+	text: 'pb-10 pt-4 lg:py-10'
+}[variant];
+---
+
+<section id={id} class='border-t border-[var(--border)] lg:grid lg:grid-cols-12' style={id ? 'scroll-margin-top: 5rem;' : undefined}>
+	<div class='px-6 pt-10 md:px-10 lg:col-span-3 lg:border-r lg:border-[var(--border)] lg:py-10'>
+		<!-- Outer cell stays full-height so the divider runs the whole
+		     section; only the label block sticks. -->
+		<div class='lg:sticky lg:top-[calc(var(--nav-h)+2rem)]'>
+			<h2 class='t-section tabular-nums'>{title}</h2>
+		</div>
+	</div>
+	<div class:list={['px-6 md:px-10 lg:col-span-9', body]}>
+		<slot />
+	</div>
+</section>

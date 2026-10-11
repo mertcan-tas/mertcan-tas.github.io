@@ -1,0 +1,36 @@
+---
+// Generated 16:9 cover for projects that ship without a screenshot.
+interface Props {
+	name: string;
+	id: string;
+}
+const { name, id } = Astro.props;
+const gid = `cover-${id}`;
+---
+
+<svg
+	viewBox='0 0 1200 675'
+	preserveAspectRatio='xMidYMid slice'
+	role='img'
+	aria-label={name}
+	class='h-full w-full transition-transform duration-500 ease-out group-hover:scale-[1.025]'
+>
+	<defs>
+		<linearGradient id={gid} x1='0' y1='1' x2='1' y2='0'>
+			<stop offset='0' stop-color='#5ac8f5'></stop>
+			<stop offset='0.45' stop-color='#2845d6'></stop>
+			<stop offset='1' stop-color='#2a2350'></stop>
+		</linearGradient>
+		<pattern id={`${gid}-lines`} width='56' height='56' patternUnits='userSpaceOnUse' patternTransform='rotate(-45)'>
+			<line x1='0' y1='0' x2='0' y2='56' stroke='#2b2523' stroke-width='1'></line>
+		</pattern>
+		<clipPath id={`${gid}-clip`}><rect width='148' height='148' rx='37'></rect></clipPath>
+	</defs>
+	<rect width='1200' height='675' fill='#0b0b0b'></rect>
+	<rect width='1200' height='675' fill={`url(#${gid}-lines)`} opacity='0.55'></rect>
+	<g transform='translate(526 196)' clip-path={`url(#${gid}-clip)`}>
+		<rect width='148' height='148' fill={`url(#${gid})`}></rect>
+		<path d='M-15 104 L104 -15 M0 148 L148 0 M44 163 L163 44' stroke='#fff' stroke-opacity='0.26' stroke-width='7.4'></path>
+	</g>
+	<text x='600' y='442' text-anchor='middle' font-size='54' font-weight='500' letter-spacing='-1.2' fill='#fafafa'>{name}</text>
+</svg>

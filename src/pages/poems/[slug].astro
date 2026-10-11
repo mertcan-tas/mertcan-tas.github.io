@@ -1,0 +1,32 @@
+---
+import { type CollectionEntry } from 'astro:content';
+import BaseLayout from '@src/layouts/BaseLayout.astro';
+import { getPoems } from '@src/i18n/content';
+import { useTranslations } from '@src/i18n/ui';
+import PageHero from '@src/components/PageHero.astro';
+import FormattedDate from '@src/components/FormattedDate.astro';
+
+export async function getStaticPaths() {
+	const poems = await getPoems();
+	return poems.map((poem) => ({ params: { slug: poem.id }, props: poem }));
+}
+type Props = CollectionEntry<'poems'>;
+const poem = Astro.props;
+const t = useTranslations('en');
+const stanzas = poem.data.text.trim().split(/\n\s*\n/);
+---
+
+<BaseLayout title={`${poem.data.title} — ${t('poems.title')}`} description={poem.data.title}>
+	<article>
+		<PageHero title={poem.data.title} back={{ href: '/poems/', label: t('poems.title') }}>
+			<p class='mt-5 font-mono text-[0.75rem] leading-4 text-[var(--text-faint)] rise' style='animation-delay: 100ms'>
+				<FormattedDate date={poem.data.date} />
+			</p>
+		</PageHero>
+		<div class='border-t border-[var(--border)] px-6 py-10 md:px-10 md:py-14'>
+			<div class='t-lead max-w-[var(--col)]'>
+				{stanzas.map((s, i) => <p class:list={['whitespace-pre-line', i > 0 && 'mt-7']}>{s}</p>)}
+			</div>
+		</div>
+	</article>
+</BaseLayout>

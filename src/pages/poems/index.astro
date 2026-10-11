@@ -1,0 +1,25 @@
+---
+import BaseLayout from '@src/layouts/BaseLayout.astro';
+import PoemItem from '@src/components/PoemItem.astro';
+import PageHero from '@src/components/PageHero.astro';
+import Section from '@src/components/Section.astro';
+import { getPoems } from '@src/i18n/content';
+import { useTranslations } from '@src/i18n/ui';
+
+const t = useTranslations('en');
+const poems = await getPoems();
+const years = [...new Set(poems.map((p) => p.data.date.getFullYear()))].sort((a, b) => b - a);
+---
+
+<BaseLayout title={t('poems.title')} description={t('poems.description')}>
+	<PageHero title={t('poems.title')} lead={t('poems.description')} />
+	{
+		years.map((year) => (
+			<Section title={year}>
+				<ul class='divide-y divide-[var(--border)]'>
+					{poems.filter((p) => p.data.date.getFullYear() === year).map((poem) => <PoemItem poem={poem} />)}
+				</ul>
+			</Section>
+		))
+	}
+</BaseLayout>

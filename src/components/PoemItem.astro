@@ -1,0 +1,19 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+const { poem } = Astro.props as { poem: CollectionEntry<'poems'> };
+const firstLine = poem.data.text.trim().split('\n')[0].replace(/[,;:.]$/, '');
+---
+
+<li>
+	<a href={`/poems/${poem.id}/`} class='group grid gap-1.5 py-4 sm:grid-cols-[1fr_auto] sm:gap-6'>
+		<span class='min-w-0'>
+			<span class='t-item block transition-colors duration-150 group-hover:text-[var(--accent)]'>{poem.data.title}</span>
+			<span class='t-sm mt-1 block max-w-[78ch] text-[var(--text-muted)]' lang='tr'>{firstLine}</span>
+		</span>
+		<span class='flex shrink-0 items-center gap-2 font-mono text-[0.75rem] leading-4 text-[var(--text-faint)] sm:pt-1'>
+			<FormattedDate date={poem.data.date} />
+		</span>
+	</a>
+</li>

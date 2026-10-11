@@ -1,5 +1,6 @@
 ---
 import Prose from './Prose.astro';
+import PageHero from './PageHero.astro';
 import { Image } from 'astro:assets';
 import { render, type CollectionEntry } from 'astro:content';
 import { useTranslations, type Lang } from '@src/i18n/ui';
@@ -9,60 +10,34 @@ const { name, description, tags, demoLink, demoLinkRel, repoLink, coverImage } =
 const { Content } = await render(project);
 const lang = (Astro.currentLocale ?? 'en') as Lang;
 const t = useTranslations(lang);
-const base = lang === 'tr' ? '/tr' : '';
 ---
 
-<div class='container'>
-	<article class='max-w-3xl mx-auto'>
-		<a href={`${base}/projects/`} class='text-sm underline opacity-70 hover:opacity-100'>&laquo; {t('nav.projects')}</a>
-
-		<h1 class='text-4xl font-bold mt-4 mb-3 leading-tight'>{name}</h1>
-
-		<div class='flex flex-wrap gap-2 mb-4'>
-			{
-				(tags || [])?.map((tag: string) => (
-					<span class='border border-zinc-300 dark:border-zinc-700 rounded-2xl text-sm text-zinc-700 dark:text-zinc-300 px-2 py-0.5'>
-						{tag}
-					</span>
-				))
-			}
+<article>
+	<PageHero title={name} lead={description} back={{ href: `/projects/`, label: t('nav.projects') }}>
+		<div class='mt-6 flex flex-wrap gap-2 rise' style='animation-delay: 130ms'>
+			{(tags || []).map((tag: string) => <span class='chip'>{tag}</span>)}
 		</div>
-
-		<p class='text-lg text-zinc-600 dark:text-zinc-300 mb-6'>{description}</p>
-
-		{coverImage && <Image class='rounded-2xl w-full mb-8' src={coverImage} alt={name} loading='eager' />}
-
-		<div class='flex flex-wrap gap-3 mb-8'>
-			{
-				demoLink && (
-					<a
-						href={demoLink}
-						target='_blank'
-						rel={demoLinkRel}
-						class='inline-flex items-center gap-2 rounded-full bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 px-4 py-2 text-sm font-semibold no-underline hover:opacity-90 transition-opacity'
-					>
-						{t('card.demo')}
-						<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M15 3h6v6'/><path d='M10 14 21 3'/><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/></svg>
-					</a>
-				)
-			}
+		<div class='mt-8 flex flex-wrap gap-3 rise' style='animation-delay: 160ms'>
+			{demoLink && <a href={demoLink} target='_blank' rel={demoLinkRel} class='btn-solid'>{t('card.demo')} <span aria-hidden='true'>↗</span></a>}
 			{
 				repoLink && (
-					<a
-						href={repoLink}
-						target='_blank'
-						rel='noopener noreferrer'
-						class='inline-flex items-center gap-2 rounded-full border border-zinc-300 dark:border-zinc-700 px-4 py-2 text-sm font-semibold no-underline hover:border-zinc-700 dark:hover:border-zinc-300 transition-colors'
-					>
-						{t('card.github')}
-						<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M15 3h6v6'/><path d='M10 14 21 3'/><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/></svg>
+					<a href={repoLink} target='_blank' rel='noopener noreferrer' class:list={[demoLink ? 'btn-outline' : 'btn-solid']}>
+						{t('card.github')} <span aria-hidden='true'>↗</span>
 					</a>
 				)
 			}
 		</div>
-
+	</PageHero>
+	<div class='border-t border-[var(--border)] px-6 py-10 md:px-10 md:py-14'>
+		{
+			coverImage && (
+				<div class='mb-10 max-w-[var(--col)] overflow-hidden rounded-[10px] border border-[var(--border)] bg-[var(--bg-card)]'>
+					<Image class='w-full' src={coverImage} alt={name} loading='eager' />
+				</div>
+			)
+		}
 		<Prose>
 			<Content />
 		</Prose>
-	</article>
-</div>
+	</div>
+</article>
