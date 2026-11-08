@@ -23,11 +23,11 @@ export const ui = {
     'notfound.back': 'Back to home',
     'poems.title': 'Poems',
     'poems.description': 'A few poems I write every now and then.',
-    'home.greeting': "Mertcan Taş",
+    'home.greeting': "Hi, I’m Mertcan and you’ve found my blog!",
     'home.intro1':
-      "I’m a software developer from Turkey, mostly working with Vue, Django, and REST APIs. This is just my own little corner of the web — a place to jot down what I learn and tinker with the occasional side project.",
+      "I build internet products by myself. No investors, no team. Just me writing every line of code on my laptop.",
     'home.intro2':
-      "Most of what I write comes from things I run into while building: bugs I fixed, tools I liked, ideas I wanted to remember. Writing them down helps me learn — and maybe it helps someone else too.",
+      "Here I write about building products alone, shipping fast, automating everything I can, and using AI as my co-worker.",
     'home.recentPosts': 'Writing',
     'home.allPosts': 'all →',
     'home.myProjects': 'Projects',
