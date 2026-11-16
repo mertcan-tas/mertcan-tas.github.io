@@ -81,7 +81,7 @@ const jsonLd = article
 <meta name='title' content={title} />
 <meta name='description' content={description} />
 <meta name='author' content={AUTHOR} />
-<meta name='robots' content='index, follow, max-image-preview:large' />
+<meta name='robots' content={Astro.url.pathname.startsWith('/404') ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
 {article?.tags?.length && <meta name='keywords' content={article.tags.join(', ')} />}
 
 <meta property='og:site_name' content={SITE_TITLE} />
