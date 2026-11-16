@@ -16,7 +16,7 @@ export const ui = {
     'home.seeAllProjects': 'See all {n} projects',
     'home.seeAllPoems': 'See all {n} poems',
     'home.contactLead':
-      'Based in Turkey. The easiest way to reach me is GitHub: open an issue, start a discussion, or just say hi.',
+      'Based in Turkey. Send me an email, or find me on GitHub: open an issue, start a discussion, or just say hi.',
     'footer.bio': 'Software developer. Vue, Django, and REST APIs.',
     'footer.site': 'Site',
     'footer.elsewhere': 'Elsewhere',

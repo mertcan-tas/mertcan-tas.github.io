@@ -1,20 +1,62 @@
 {
   "1": {
     "color": "#0C4B33",
-    "logos": ["django", "swagger"],
-    "words": ["DJANGO", "DRF", "SWAGGER", "OPENAPI", "SCHEMA"],
+    "logos": [
+      "django",
+      "swagger"
+    ],
+    "words": [
+      "DJANGO",
+      "DRF",
+      "SWAGGER",
+      "OPENAPI",
+      "SCHEMA"
+    ],
     "topic": "django / drf"
   },
   "2": {
     "color": "#0C4B33",
-    "logos": ["django", "python"],
-    "words": ["DJANGO", "PYTHON", ".ENV", "CONFIG", "SECRETS"],
+    "logos": [
+      "django",
+      "python"
+    ],
+    "words": [
+      "DJANGO",
+      "PYTHON",
+      ".ENV",
+      "CONFIG",
+      "SECRETS"
+    ],
     "topic": "django / python-decouple"
   },
   "3": {
     "color": "#D82C20",
-    "logos": ["django", "redis"],
-    "words": ["DJANGO", "REDIS", "QUEUE", "WORKER", "ASYNC"],
+    "logos": [
+      "django",
+      "redis"
+    ],
+    "words": [
+      "DJANGO",
+      "REDIS",
+      "QUEUE",
+      "WORKER",
+      "ASYNC"
+    ],
     "topic": "django / redis-rq"
+  },
+  "4": {
+    "color": "#0C4B33",
+    "logos": [
+      "django",
+      "docker"
+    ],
+    "words": [
+      "DOCKER",
+      "NGINX",
+      "DEPLOY",
+      "ROLLOUT",
+      "HEALTHY"
+    ],
+    "topic": "django / docker compose"
   }
 }
