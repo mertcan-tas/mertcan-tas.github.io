@@ -33,7 +33,7 @@ const t = useTranslations(lang);
 		{
 			coverImage && (
 				<div class='mb-10 max-w-[var(--col)] overflow-hidden rounded-[10px] border border-[var(--border)] bg-[var(--bg-card)]'>
-					<Image class='w-full' src={coverImage} alt={title} loading='eager' />
+					<Image class='w-full' src={coverImage} alt={title} loading='eager' widths={[800, 1200, 1600, 2400]} sizes='(min-width: 1024px) 1200px, 100vw' quality={92} />
 				</div>
 			)
 		}

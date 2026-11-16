@@ -6,14 +6,14 @@ import { loadEnv } from 'vite';
 import type { Lang } from '@src/i18n/utils';
 
 const { GTAG_MEASUREMENT_ID } = loadEnv(process.env.NODE_ENV || 'production', process.cwd(), '');
-const { title, description, image } = Astro.props;
+const { title, description, image, imageAlt, article } = Astro.props;
 const lang = (Astro.currentLocale ?? 'en') as Lang;
 ---
 
 <!doctype html>
 <html lang={lang}>
 	<head>
-		<BaseHead title={title} description={description} image={image} />
+		<BaseHead title={title} description={description} image={image} imageAlt={imageAlt} article={article} lang={lang} />
 	</head>
 	<body class='bg-[var(--bg)] font-sans antialiased'>
 		<Header />

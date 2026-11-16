@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600;800&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #000; }
+.cover { width: 1200px; height: 630px; display: grid; grid-template-columns: 420px minmax(0, 1fr); background: #000; color: #fafafa; font-family: Geist, sans-serif; }
+.side { background: {{COLOR}}; position: relative; overflow: hidden; padding: 48px; display: flex; flex-direction: column; justify-content: flex-end; }
+.words { position: absolute; top: -18px; left: -14px; display: flex; flex-direction: column; font-size: 132px; font-weight: 800; line-height: 0.86; letter-spacing: -0.05em; color: {{COLOR}}; -webkit-text-stroke: 3px {{STROKE}}; paint-order: stroke fill; white-space: nowrap; }
+.logos { position: relative; display: flex; gap: 12px; }
+.logo { width: 84px; height: 84px; border-radius: 18px; background: #fff; display: flex; align-items: center; justify-content: center; }
+.logo svg { width: 52px; height: 52px; }
+.main { padding: 72px 64px; display: flex; flex-direction: column; justify-content: center; gap: 28px; min-height: 0; }
+.topic { font-family: 'Geist Mono', monospace; font-size: 18px; color: {{ACCENT}}; }
+.title-box { max-height: 400px; display: flex; align-items: center; }
+h1 { margin: 0; font-size: 80px; line-height: 1.04; font-weight: 600; letter-spacing: -0.035em; overflow-wrap: break-word; }
+</style>
+</head>
+<body>
+<div class="cover">
+<div class="side">
+<div class="words">{{WORDS}}</div>
+<div class="logos">{{LOGOS}}</div>
+</div>
+<div class="main">
+<span class="topic">{{TOPIC}}</span>
+<div class="title-box"><h1>{{TITLE}}</h1></div>
+</div>
+</div>
+<script>
+document.fonts.ready.then(() => {
+  const box = document.querySelector('.title-box');
+  const title = box.querySelector('h1');
+  const maxHeight = 400;
+  const maxLines = 4;
+  let size = 80;
+  const fits = () => {
+    const lines = Math.round(title.offsetHeight / (size * 1.04));
+    return title.offsetHeight <= maxHeight && lines <= maxLines && title.scrollWidth <= title.clientWidth;
+  };
+  while (size > 36 && !fits()) {
+    size -= 2;
+    title.style.fontSize = size + 'px';
+  }
+  document.body.dataset.ready = 'true';
+});
+</script>
+</body>
+</html>

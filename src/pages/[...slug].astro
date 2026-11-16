@@ -10,9 +10,15 @@ export async function getStaticPaths() {
 }
 type Props = CollectionEntry<'blog'>;
 const post = Astro.props;
-const { title, seoTitle, description, coverImage } = post.data;
+const { title, seoTitle, description, coverImage, pubDate, updatedDate, tags } = post.data;
 ---
 
-<BaseLayout title={seoTitle || title} description={description} image={coverImage?.src || undefined}>
+<BaseLayout
+	title={seoTitle || title}
+	description={description}
+	image={coverImage}
+	imageAlt={title}
+	article={{ publishedTime: pubDate, modifiedTime: updatedDate, tags, section: tags?.[0] }}
+>
 	<Article post={post} />
 </BaseLayout>

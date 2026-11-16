@@ -10,9 +10,9 @@ export async function getStaticPaths() {
 }
 type Props = CollectionEntry<'projects'>;
 const project = Astro.props;
-const { name, description } = project.data;
+const { name, description, coverImage } = project.data;
 ---
 
-<BaseLayout title={name} description={description}>
+<BaseLayout title={name} description={description} image={coverImage} imageAlt={name}>
 	<ProjectArticle project={project} />
 </BaseLayout>
