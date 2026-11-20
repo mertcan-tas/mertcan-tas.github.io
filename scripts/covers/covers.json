@@ -58,5 +58,21 @@
       "HEALTHY"
     ],
     "topic": "django / docker compose"
+  },
+  "5": {
+    "color": "#276EF1",
+    "accent": "#9cc0ff",
+    "logos": [
+      "threedotjs",
+      "typescript"
+    ],
+    "words": [
+      "THREE.JS",
+      "WEBGL",
+      "RENDER",
+      "SHADOW",
+      "IDLE"
+    ],
+    "topic": "three.js / performance"
   }
 }
